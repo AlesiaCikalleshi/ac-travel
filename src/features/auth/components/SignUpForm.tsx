@@ -1,9 +1,15 @@
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
+import { Navigate } from "react-router-dom";
 
 import { Box, Link, Stack, TextField, Typography } from "@mui/material";
 
 import { AppRoutes } from "@config/routes";
 import AppButton from "@features/ui/AppButton";
+import { auth } from "@services/firebase";
+import { useAppDispatch, useAppSelector } from "@store/index";
+
+import { registerUser } from "../store/authActions";
+import { selectAuth, setUserName } from "../store/authSlice";
 
 interface FormInput {
   name: string;
@@ -13,19 +19,12 @@ interface FormInput {
 }
 
 export default function SignUpForm() {
-  const { control, handleSubmit } = useForm<FormInput>({
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      passwordRepeat: "",
-    },
-  });
+  const auth = useAppSelector(selectAuth);
+  const { onSubmit, control, handleSubmit, password } = useSignUpForm();
 
-  const onSubmit: SubmitHandler<FormInput> = (data) => {
-    console.log(data);
-    // TODO: Register user through firebase
-  };
+  if (auth) {
+    return <Navigate to={AppRoutes.dashboard} replace />;
+  }
 
   return (
     <Box
@@ -51,7 +50,7 @@ export default function SignUpForm() {
             variant="standard"
             helperText={fieldState.error?.message}
             error={Boolean(fieldState.error)}
-            sx={{ mb: 3, mt: 0 }}
+            sx={{ mb: 3 }}
             {...field}
           />
         )}
@@ -73,7 +72,7 @@ export default function SignUpForm() {
             variant="standard"
             helperText={fieldState.error?.message}
             error={Boolean(fieldState.error)}
-            sx={{ mb: 3, mt: 0 }}
+            sx={{ mb: 3 }}
             {...field}
           />
         )}
@@ -89,13 +88,14 @@ export default function SignUpForm() {
             required
             fullWidth
             id="password"
+            type="password"
             label="Password"
             autoComplete="current-password"
             placeholder="Your password"
             variant="standard"
             helperText={fieldState.error?.message}
             error={Boolean(fieldState.error)}
-            sx={{ mb: 3, mt: 0 }}
+            sx={{ mb: 3 }}
             {...field}
           />
         )}
@@ -104,25 +104,37 @@ export default function SignUpForm() {
       <Controller
         name="passwordRepeat"
         control={control}
-        rules={{ required: "Please confirm your password!" }}
+        rules={{
+          required: "Please specify your password confirmation!",
+          validate: (confirmPassword) =>
+            confirmPassword !== password
+              ? "Passwords doesn't match!"
+              : undefined,
+        }}
         render={({ field, fieldState }) => (
           <TextField
+            variant="standard"
             margin="normal"
             required
             fullWidth
-            id="passwordRepeat"
             label="Confirm Password"
+            type="password"
+            id="passwordRepeat"
             autoComplete="current-password"
-            placeholder="Your password"
-            variant="standard"
             helperText={fieldState.error?.message}
             error={Boolean(fieldState.error)}
-            sx={{ mb: { xs: 3, md: 5 }, mt: 0 }}
+            sx={{ mb: { xs: 3, md: 5 } }}
             {...field}
           />
         )}
       />
-      <AppButton type="submit" fullWidth variant="contained" sx={{ mb: 2 }}>
+      <AppButton
+        // loading={auth.status === "loading"}
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mb: 2 }}
+      >
         Sign up
       </AppButton>
       <Stack
@@ -140,4 +152,36 @@ export default function SignUpForm() {
       </Stack>
     </Box>
   );
+}
+
+function useSignUpForm() {
+  const dispatch = useAppDispatch();
+
+  const { control, handleSubmit, watch } = useForm<FormInput>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      passwordRepeat: "",
+    },
+  });
+  const password = watch("password");
+
+  const onSubmit: SubmitHandler<FormInput> = async (data) => {
+    await dispatch(
+      registerUser({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      }),
+    ).unwrap();
+    dispatch(setUserName(auth.currentUser?.displayName));
+  };
+
+  return {
+    onSubmit,
+    control,
+    password,
+    handleSubmit,
+  };
 }
