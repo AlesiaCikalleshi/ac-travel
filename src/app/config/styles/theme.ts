@@ -1,7 +1,8 @@
-import { createTheme } from "@mui/material";
+import { type LinkProps, createTheme } from "@mui/material";
 
 import { FontFamilies } from "./FontFamilies";
 import { FontWeights } from "./FontWeights";
+import LinkBehavior from "./LinkBehavior";
 
 const theme = createTheme({
   palette: {
@@ -18,6 +19,37 @@ const theme = createTheme({
     grey: {
       [100]: "#F9F9F9",
       [200]: "#EAEAEA",
+    },
+  },
+  components: {
+    MuiInputBase: {
+      defaultProps: {
+        style: {
+          fontFamily: FontFamilies.poppins,
+          fontWeight: FontWeights.regular,
+          fontSize: "1rem",
+          lineHeight: "1.5rem",
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: "0.875rem",
+          lineHeight: "1.313rem",
+          fontFamily: FontFamilies.roboto,
+        },
+      },
+    },
+    MuiLink: {
+      defaultProps: {
+        component: LinkBehavior,
+      } as LinkProps,
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: LinkBehavior,
+      },
     },
   },
 });
