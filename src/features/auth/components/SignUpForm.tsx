@@ -22,7 +22,7 @@ export default function SignUpForm() {
   const auth = useAppSelector(selectAuth);
   const { onSubmit, control, handleSubmit, password } = useSignUpForm();
 
-  if (auth) {
+  if (auth.user) {
     return <Navigate to={AppRoutes.dashboard} replace />;
   }
 
@@ -129,7 +129,7 @@ export default function SignUpForm() {
         )}
       />
       <AppButton
-        // loading={auth.status === "loading"}
+        loading={auth.status === "loading"}
         type="submit"
         fullWidth
         variant="contained"

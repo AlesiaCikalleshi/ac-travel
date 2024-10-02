@@ -1,8 +1,8 @@
-import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { RootState } from '@store/index';
+import { RootState } from "@store/index";
 
-import { loginUser, registerUser } from './authActions';
+import { loginUser, registerUser } from "./authActions";
 
 interface UserInfo {
   uid: string;
@@ -12,28 +12,28 @@ interface UserInfo {
 
 interface AuthState {
   user: UserInfo | null;
-  status: 'loading' | 'idle' | 'failed' | 'succeeded';
+  status: "loading" | "idle" | "failed" | "succeeded";
   error?: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
-  status: 'idle',
+  status: "idle",
   error: null,
 };
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     userLoaded: (state, action: PayloadAction<UserInfo>) => {
       state.user = action.payload;
-      state.status = 'succeeded';
+      state.status = "succeeded";
       state.error = null;
     },
     logout: (state) => {
       state.user = null;
-      state.status = 'succeeded';
+      state.status = "succeeded";
       state.error = null;
     },
     setUserName: (state, action: PayloadAction<string | null | undefined>) => {
@@ -45,27 +45,27 @@ export const authSlice = createSlice({
   extraReducers: (builder) =>
     builder
       .addCase(registerUser.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
         state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.payload;
       })
       .addCase(registerUser.fulfilled, (state) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.error = null;
       })
       .addCase(loginUser.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.payload;
       })
       .addCase(loginUser.fulfilled, (state) => {
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.error = null;
       }),
 });
