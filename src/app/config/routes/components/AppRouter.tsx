@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
+import AccountLayout from "@features/ui/layout/AccountLayout/AccountLayout";
 import AuthLayout from "@features/ui/layout/AuthLayout";
 import AddTripPage from "@pages/account/add-trip";
 import DashboardPage from "@pages/account/dashboard";
@@ -25,7 +26,7 @@ export default function AppRouter() {
       <Route
         element={
           <ProtectedRoute>
-            <AuthLayout />
+            <AccountLayout />
           </ProtectedRoute>
         }
       >
