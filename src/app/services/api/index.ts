@@ -1,2 +1,1 @@
-export { register } from "./auth";
-export { login } from "./auth";
+export { register, login, logout } from "./auth";
