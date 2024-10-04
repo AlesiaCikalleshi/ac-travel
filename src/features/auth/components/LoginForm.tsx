@@ -1,5 +1,5 @@
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 import { Box, Link, Stack, TextField, Typography } from "@mui/material";
 
@@ -18,9 +18,13 @@ interface FormInput {
 export default function LoginForm() {
   const { handleSubmit, control, onSubmit } = useLoginForm();
   const auth = useAppSelector(selectAuth);
+  const location = useLocation();
 
-  if (auth) {
-    // return <Navigate to={AppRoutes.dashboard} replace />;
+  if (auth.user) {
+    // Redirect them to the /login page, but save the current location they were
+    // trying to go to when they were redirected.
+    const from = location.state?.from?.pathname || AppRoutes.dashboard;
+    return <Navigate to={from} replace />;
   }
 
   return (
