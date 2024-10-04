@@ -118,10 +118,11 @@ export default function AccountLayout() {
             position="fixed"
             sx={{
               boxShadow: "none",
-              backgroundColor: {
-                // xs: isPrimaryNavBackgroundColor ? "primary.main" : "grey.100",
-                md: "grey.100",
-              },
+              background: "grey.100"
+              // backgroundColor: {
+              //   // xs: isPrimaryNavBackgroundColor ? "primary.main" : "grey.100",
+              //   md: "grey.100",
+              // },
             }}
           >
             <Toolbar>
