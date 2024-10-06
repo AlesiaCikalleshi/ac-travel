@@ -57,8 +57,8 @@ const StyledDrawer = styled(Drawer, {
 const TOOLBAR_STYLES = { mt: 2, mb: 1 };
 
 export default function AccountLayout() {
-  const { md } = useBreakpoints();
-  const [isOpen, setOpen] = useState(false);
+  const { md, xl } = useBreakpoints();
+  const [isOpen, setOpen] = useState(xl);
 
   const closeDrawer = () => {
     setOpen(false);
@@ -72,10 +72,10 @@ export default function AccountLayout() {
     <Box
       sx={{
         display: "flex",
-
         bgcolor: "grey.100",
-
-        minHeight: "100vh",
+        minHeight: { md: "100vh" },
+        maxHeight: { xs: "-webkit-fill-available", md: "auto" },
+        height: { xs: "100vh", md: "auto" },
       }}
     >
       {/* Desktop Drawer */}
@@ -118,14 +118,10 @@ export default function AccountLayout() {
             position="fixed"
             sx={{
               boxShadow: "none",
-              background: "grey.100"
-              // backgroundColor: {
-              //   // xs: isPrimaryNavBackgroundColor ? "primary.main" : "grey.100",
-              //   md: "grey.100",
-              // },
+              background: "grey.100",
             }}
           >
-            <Toolbar>
+            <Toolbar sx={TOOLBAR_STYLES}>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -134,13 +130,7 @@ export default function AccountLayout() {
               >
                 <MenuIcon
                   sx={{
-                    color: {
-                      // xs: isPrimaryNavBackgroundColor
-                      //   ? "white"
-                      //   : "primary.main",
-                      md: "primary.main",
-                    },
-
+                    color: "primary.main",
                     fontSize: 40,
                   }}
                 />
