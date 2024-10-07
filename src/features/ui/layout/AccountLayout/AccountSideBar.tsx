@@ -12,7 +12,7 @@ import { AppRoutes } from "@config/routes";
 import { Colors } from "@config/styles";
 import { theme } from "@config/styles";
 import { selectUser } from "@features/auth/store/authSlice";
-import AppButton from "@features/ui/AppButton";
+import AppButton from "@features/ui/logo/AppButton";
 import Logo from "@features/ui/logo/Logo";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 import { logout } from "@services/api";

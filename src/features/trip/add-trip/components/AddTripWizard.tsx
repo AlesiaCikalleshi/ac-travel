@@ -39,7 +39,7 @@ export default function AddTripWizard() {
           sx={{
             maxHeight: { xs: "56vh", md: "40vh" },
             minHeight: { xs: "56vh", md: "auto" },
-            overflow: "scroll",
+            overflowY: "scroll",
           }}
         >
           <StepComponent />

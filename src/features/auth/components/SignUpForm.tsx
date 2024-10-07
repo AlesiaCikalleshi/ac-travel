@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { Box, Link, Stack, TextField, Typography } from "@mui/material";
 
 import { AppRoutes } from "@config/routes";
-import AppButton from "@features/ui/AppButton";
+import AppButton from "@features/ui/logo/AppButton";
 import { auth } from "@services/firebase";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
