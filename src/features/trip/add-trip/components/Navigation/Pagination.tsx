@@ -2,7 +2,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import MobileStepper from "@mui/material/MobileStepper";
 
-import AppButton from "@features/ui/AppButton";
+import AppButton from "@features/ui/logo/AppButton";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
 import { WIZARD_STEPS } from "../../data";

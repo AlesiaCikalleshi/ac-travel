@@ -3,51 +3,43 @@ import { WizardSteps } from "./types";
 
 export const WIZARD_STEPS: WizardSteps[] = [
   {
-    title: "Select campaign settings",
-    description: `For each ad campaign that you create.`,
-    Component: TravelInfo,
-  },
-  {
-    title: "Create an ad group",
+    title: "Travel information",
     description:
-      "An ad group contains one or more ads which target a shared set of keywords.",
+      "Describe your trip to always easily find it on your travel board.",
     Component: TravelInfo,
   },
   {
-    title: "Create an ad",
-    description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
-    Component: TravelInfo,
-  },
-  {
-    title: "Selecs",
-    description: `For each ad campaign that you create, you can control how much
-                you're willing to spend oon clicks and conversions, which networks
-                and geographical locations you want your ads to show on, and more.`,
-    Component: TravelInfo,
-  },
-  {
-    title: "Creat",
+    title: "Destination",
     description:
-      "An ad group contains one or more ads whoich target a shared set of keywords.",
+      "Add where are you going to. You can add maximum 5 destinations.",
     Component: TravelInfo,
   },
   {
-    title: "Cr",
-    description: `Try out different ad text to see what brings in the most customers,
-                and learn how to enhance your ads uosing features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
+    title: "Places to visit",
+    description:
+      "Plan your perfect adventure with our curated list of must-visit places.",
     Component: TravelInfo,
   },
   {
-    title: "Creatt",
-    description: `Try out different ad texto to see what brings in the most customers,
-                and learn how to enhance your ads using features like ad extensions.
-                If you run into any problems with your ads, find out how to tell if
-                they're running and how to resolve approval issues.`,
+    title: "Expenses",
+    description:
+      "Easily enter details about each expense and stay organized and informed about where your money is going.",
+    Component: TravelInfo,
+  },
+  {
+    title: "Documents",
+    description: "Upload documents that you need for your trip.",
+    Component: TravelInfo,
+  },
+  {
+    title: "Packing list",
+    description:
+      "Plan what you will need to grab with you to a trip. Add up to 4 checklists.",
+    Component: TravelInfo,
+  },
+  {
+    title: "Photos",
+    description: "Add your memories here!",
     Component: TravelInfo,
   },
 ];

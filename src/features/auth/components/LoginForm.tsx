@@ -4,7 +4,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { Box, Link, Stack, TextField, Typography } from "@mui/material";
 
 import { AppRoutes } from "@config/routes";
-import AppButton from "@features/ui/AppButton";
+import AppButton from "@features/ui/logo/AppButton";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
 import { loginUser } from "../store/authActions";
