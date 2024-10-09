@@ -1,26 +1,50 @@
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 import ImageSearchIcon from "@mui/icons-material/ImageSearch";
-import { ButtonBase, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  ButtonBase,
+  FormHelperText,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import { Colors } from "@config/styles";
 import PreviewImageDialog from "@features/trip/componnets/PreviewImageDialog";
+import { TRIP_PREVIEW_IMAGES } from "@features/trip/data";
 import useDialog from "@hooks/useDialog";
+import { useAppDispatch, useAppSelector } from "@store/index";
 
+import type { Trip } from "../../../types";
+import {
+  nextStep,
+  selectWizardTrip,
+  setTravelInfromation,
+} from "../../store/tripWizardSlice";
 import Pagination from "../Navigation/Pagination";
 import DateSelectInput from "./DateSelectInput";
 
 interface FormInput {
-  previewImage: string | null;
-  name: string;
-  description: string;
-  startDate: Date | null;
-  endDate: Date | null;
+  previewImage: Trip["previewImage"];
+  name: Trip["name"];
+  description: Trip["description"];
+  startDate: Trip["startDate"];
+  endDate: Trip["endDate"];
 }
 
 export default function TravelInfo() {
-  const { onSubmit, control, handleSubmit, formValues } = useTravelInfoForm();
   const { isOpen, open, close } = useDialog();
+  const {
+    onSubmit,
+    control,
+    handleSubmit,
+    formValues,
+    register,
+    errors,
+    onPreviewImageSave,
+    previewImageSrc,
+  } = useTravelInfoForm({ closePreviewImageDialog: close });
 
   return (
     <Stack
@@ -31,27 +55,55 @@ export default function TravelInfo() {
       gap={3}
     >
       <Stack direction={{ xs: "column", md: "row" }} gap={3}>
-        <ButtonBase
-          onClick={open}
-          sx={{
-            borderRadius: 4,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-            gap: 0.5,
-            height: 152,
-            minWidth: { xs: "100%", md: 152 },
-            border: 1,
-            borderColor: "text.secondary",
-          }}
-        >
-          <ImageSearchIcon sx={{ color: Colors.disabled }} />
-          <Typography variant="subtitle1" color={Colors.disabled}>
-            Preview Image
-          </Typography>
-        </ButtonBase>
-
+        <Stack>
+          <ButtonBase
+            onClick={open}
+            sx={{
+              borderRadius: 4,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+              gap: 0.5,
+              height: 152,
+              minWidth: { xs: "100%", md: 152 },
+              border: 1,
+              borderColor: "text.secondary",
+            }}
+          >
+            {previewImageSrc ? (
+              <Box
+                component="img"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: 4,
+                  objectFit: "cover",
+                }}
+                // src={previewImageSrc}
+                alt="Trip preview"
+              />
+            ) : (
+              <>
+                <ImageSearchIcon sx={{ color: Colors.disabled }} />
+                <Typography variant="subtitle1" color={Colors.disabled}>
+                  Preview image
+                </Typography>
+              </>
+            )}
+          </ButtonBase>
+          {errors.previewImage && (
+            <FormHelperText error sx={{ maxWidth: 152 }}>
+              {errors.previewImage.message}
+            </FormHelperText>
+          )}
+          <input
+            type="hidden"
+            {...register("previewImage", {
+              required: "Please select a preview image!",
+            })}
+          />
+        </Stack>
         <Stack sx={{ width: "100%" }} gap={3}>
           <Controller
             name="name"
@@ -115,25 +167,55 @@ export default function TravelInfo() {
         )}
       />
       <Pagination />
-      <PreviewImageDialog isOpen={isOpen} onClose={close} />
+      <PreviewImageDialog
+        isOpen={isOpen}
+        onClose={close}
+        onSave={onPreviewImageSave}
+      />
     </Stack>
   );
 }
 
-function useTravelInfoForm() {
-  const { control, handleSubmit, watch } = useForm<FormInput>({
+function useTravelInfoForm({
+  closePreviewImageDialog,
+}: {
+  closePreviewImageDialog: () => void;
+}) {
+  const dispatch = useAppDispatch();
+  const trip = useAppSelector(selectWizardTrip);
+  const {
+    control,
+    handleSubmit,
+    watch,
+    register,
+    setValue,
+    formState: { errors },
+    trigger,
+  } = useForm<FormInput>({
     defaultValues: {
-      name: "",
-      description: "",
-      startDate: null,
-      endDate: null,
+      name: trip.name,
+      description: trip.description,
+      startDate: trip.startDate,
+      endDate: trip.endDate,
+      previewImage: trip.previewImage,
     },
   });
   const formValues = watch();
+  const previewImageSrc = formValues.previewImage?.templateImageId
+    ? TRIP_PREVIEW_IMAGES.find(
+        (image) => image.id === formValues.previewImage?.templateImageId,
+      )
+    : null;
+
+  const onPreviewImageSave = (previewImage: Trip["previewImage"]) => {
+    closePreviewImageDialog();
+    setValue("previewImage", previewImage);
+    trigger("previewImage");
+  };
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
-    //TODO save step info
-    console.log(data);
+    dispatch(nextStep());
+    dispatch(setTravelInfromation(data));
   };
 
   return {
@@ -141,5 +223,9 @@ function useTravelInfoForm() {
     control,
     handleSubmit,
     formValues,
+    register,
+    errors,
+    previewImageSrc,
+    onPreviewImageSave,
   };
 }
