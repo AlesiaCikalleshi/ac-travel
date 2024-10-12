@@ -1,5 +1,6 @@
 import Destination from "./components/Steps/Destination";
 import TravelInfo from "./components/Steps/TravelInfo";
+import { MAX_TRIP_DESTINATION } from "./components/constants";
 import { WizardSteps } from "./types";
 
 export const WIZARD_STEPS: WizardSteps[] = [
@@ -11,8 +12,7 @@ export const WIZARD_STEPS: WizardSteps[] = [
   },
   {
     title: "Destination",
-    description:
-      "Add where are you going to. You can add maximum 5 destinations.",
+    description: `Add where are you going to. You can add maximum ${MAX_TRIP_DESTINATION} destinations.`,
     Component: Destination,
   },
   {

@@ -146,7 +146,6 @@ export default function TravelInfo() {
       <Controller
         name="description"
         control={control}
-        rules={{ required: "Please specify  trip description!" }}
         render={({ field: { ref, ...field }, fieldState }) => (
           <TextField
             inputRef={ref}

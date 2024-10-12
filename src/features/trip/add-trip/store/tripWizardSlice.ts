@@ -22,7 +22,7 @@ const getInitialState = () => ({
     startDate: null,
     endDate: null,
     locationFrom: "",
-    destinations: [],
+    destinations: [{ id: uuidv4(), name: "" }],
     places: [],
     expenses: [],
     documents: [],
@@ -61,6 +61,12 @@ export const tripWizardSlice = createSlice({
       state.trip.startDate = action.payload.startDate;
       state.trip.endDate = action.payload.endDate;
     },
+    setLocationFrom: (state, action: PayloadAction<Trip["locationFrom"]>) => {
+      state.trip.locationFrom = action.payload;
+    },
+    setDestinations: (state, action: PayloadAction<Trip["destinations"]>) => {
+      state.trip.destinations = action.payload;
+    },
   },
   //The PURGE action is used to clear the persisted state from storage.
   // When this action is triggered, it will execute the provided function.
@@ -71,8 +77,13 @@ export const tripWizardSlice = createSlice({
   },
 });
 
-export const { nextStep, previousStep, setTravelInfromation } =
-  tripWizardSlice.actions;
+export const {
+  nextStep,
+  previousStep,
+  setTravelInfromation,
+  setLocationFrom,
+  setDestinations,
+} = tripWizardSlice.actions;
 
 export const selectCurrentStep = (state: RootState) =>
   state.tripWizard.currentStep;
