@@ -1,4 +1,5 @@
 import Destination from "./components/Steps/Destination";
+import Places from "./components/Steps/Places";
 import TravelInfo from "./components/Steps/TravelInfo";
 import { MAX_TRIP_DESTINATION } from "./components/constants";
 import { WizardSteps } from "./types";
@@ -19,7 +20,7 @@ export const WIZARD_STEPS: WizardSteps[] = [
     title: "Places to visit",
     description:
       "Plan your perfect adventure with our curated list of must-visit places.",
-    Component: TravelInfo,
+    Component: Places,
   },
   {
     title: "Expenses",
