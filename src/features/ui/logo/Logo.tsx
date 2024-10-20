@@ -28,13 +28,14 @@ interface Props {
 export default function Logo({ isMinimized }: Props) {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
+  const isFooter = location.pathname === "/landing";
   
   return (
     <Box
       sx={{
         display: "flex",
         alignItems: "center",
-        justifyContent: isLoginPage ? "center" : "flex-start",
+        justifyContent: isLoginPage && isFooter ? "center" : "flex-start",
         height: 60,
         width: "100%",
         gap: 2.5,
