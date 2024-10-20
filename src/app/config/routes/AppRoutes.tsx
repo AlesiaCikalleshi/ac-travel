@@ -5,4 +5,5 @@ export const AppRoutes = {
   dashboard: "/account/dashboard",
   trips: "/account/trips",
   addTrip: "/account/add-trip",
+  landing: "/landing",
 };
