@@ -1,4 +1,4 @@
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 
@@ -97,7 +97,7 @@ export default function LandingInformation() {
                 }}
               >
                 Plan your trip
-                <ChevronRightIcon sx={{ mb: -0.8 }} />
+                <ArrowForwardIcon sx={{ mb: -0.8 }} />
               </AppButton>
               <AppButton
                 type="submit"
