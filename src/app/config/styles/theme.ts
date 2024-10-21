@@ -99,6 +99,11 @@ const theme = createTheme({
         },
       },
     },
+    MuiContainer: {
+      defaultProps: {
+        maxWidth: false, // Disables the maxWidth limit globally
+      },
+    },
   },
 });
 
