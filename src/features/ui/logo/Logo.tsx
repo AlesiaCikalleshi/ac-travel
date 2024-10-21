@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 
 import { APP_NAME } from "@config/constants";
+import Footer from "@features/auth/blog/components/Footer";
 
 function LogoIcon() {
   return (
@@ -24,18 +25,18 @@ function LogoIcon() {
 
 interface Props {
   isMinimized?: boolean;
+  justify?: "center" | "flex-start";
 }
-export default function Logo({ isMinimized }: Props) {
+export default function Logo({ isMinimized, justify = "flex-start" }: Props) {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
-  const isFooter = location.pathname === "/landing";
-  
+
   return (
     <Box
       sx={{
         display: "flex",
         alignItems: "center",
-        justifyContent: isLoginPage && isFooter ? "center" : "flex-start",
+        justifyContent: isLoginPage ? "center" : justify,
         height: 60,
         width: "100%",
         gap: 2.5,

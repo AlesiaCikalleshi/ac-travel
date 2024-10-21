@@ -3,7 +3,6 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
@@ -13,15 +12,10 @@ import Logo from "@features/ui/logo/Logo";
 export default function Footer() {
   return (
     <>
-      <Divider />
       <Container
         sx={{
-          display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
           my: 3,
-          textAlign: { sm: "center", md: "center" },
         }}
       >
         <Box
@@ -45,10 +39,14 @@ export default function Footer() {
                 fontWeight: "bold",
               }}
             >
-              <Logo />
+              <Logo justify="center" />
             </Typography>
             <Typography variant="body1">Get in touch</Typography>
-            <Typography color="text.secondary" variant="subtitle1" sx={{mb: 2}}>
+            <Typography
+              color="text.secondary"
+              variant="subtitle1"
+              sx={{ mb: 2 }}
+            >
               Contact us anytime for getting support
             </Typography>
             <Typography variant="body1">
