@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 
 import { APP_NAME } from "@config/constants";
-import Footer from "@features/auth/blog/components/Footer";
 
 function LogoIcon() {
   return (
