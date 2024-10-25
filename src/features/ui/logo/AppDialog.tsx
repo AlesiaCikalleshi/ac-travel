@@ -79,7 +79,11 @@ export default function AppDialog({
       </Typography>
       <Box component={isForm ? "form" : "div"}>
         <DialogContent
-          sx={{ px: { xs: MOBILE_PADDING_X, md: DESKTOP_PADDING_X }, py: 0 }}
+          sx={{
+            px: { xs: MOBILE_PADDING_X, md: DESKTOP_PADDING_X },
+            py: 0,
+            pb: { xs: 12, md: 0 },
+          }}
         >
           {children}
         </DialogContent>
