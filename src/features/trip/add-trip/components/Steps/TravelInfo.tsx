@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 import { Colors } from "@config/styles";
-import PreviewImageDialog from "@features/trip/componnets/PreviewImageDialog";
+import PreviewImageDialog from "@features/trip/components/PreviewImageDialog";
 import { TRIP_PREVIEW_IMAGES } from "@features/trip/data";
 import useDialog from "@hooks/useDialog";
 import { useAppDispatch, useAppSelector } from "@store/index";
