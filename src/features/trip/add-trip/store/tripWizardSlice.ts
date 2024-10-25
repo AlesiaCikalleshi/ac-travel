@@ -70,6 +70,9 @@ export const tripWizardSlice = createSlice({
     setPlaces: (state, action: PayloadAction<Trip["places"]>) => {
       state.trip.places = action.payload;
     },
+    setExpenses: (state, action: PayloadAction<Trip["expenses"]>) => {
+      state.trip.expenses = action.payload;
+    },
   },
   //The PURGE action is used to clear the persisted state from storage.
   // When this action is triggered, it will execute the provided function.
@@ -87,6 +90,7 @@ export const {
   setLocationFrom,
   setDestinations,
   setPlaces,
+  setExpenses,
 } = tripWizardSlice.actions;
 
 export const selectCurrentStep = (state: RootState) =>
