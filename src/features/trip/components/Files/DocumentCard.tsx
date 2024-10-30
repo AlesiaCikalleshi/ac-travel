@@ -1,11 +1,19 @@
 import CloseIcon from "@mui/icons-material/Close";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import { Box, CircularProgress, IconButton, Link, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Link,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 interface Props {
   name: string;
   url?: string | null;
   onRemoveClick: () => void;
+  isRemoving: boolean;
   uploadProgress: number | undefined;
 }
 
@@ -14,6 +22,7 @@ export default function DocumentCard({
   url,
   onRemoveClick,
   uploadProgress,
+  isRemoving,
 }: Props) {
   return (
     <Box
@@ -22,7 +31,8 @@ export default function DocumentCard({
         border: 1,
         borderRadius: 4,
         borderColor: "grey.200",
-        width: 200,
+        width: { xs: 170, md: 200 },
+        height: "100%",
       }}
     >
       {uploadProgress != undefined && (
@@ -38,14 +48,21 @@ export default function DocumentCard({
       )}
       <IconButton
         onClick={onRemoveClick}
-        sx={{ position: "absolute", top: 8, right: 8, width: "fit-content" }}
+        sx={{
+          position: "absolute",
+          top: 8,
+          right: 8,
+          width: "fit-content",
+          opacity: uploadProgress ? 0.2 : 1,
+        }}
+        disabled={isRemoving}
       >
-        <CloseIcon />
+        {isRemoving ? <CircularProgress size={24} /> : <CloseIcon />}
       </IconButton>
       <Stack
-        href={url ?? "#"}
+        href={isRemoving ? "" : url ?? "#"}
         component={Link}
-        target="_blank"
+        target={isRemoving ? "_self" : "_blank"}
         rel="noopener noreferrer"
         gap={2}
         sx={{
@@ -54,6 +71,7 @@ export default function DocumentCard({
           p: 2,
           pt: 6,
           textDecoration: "none",
+          opacity: uploadProgress ? 0.2 : 1,
         }}
       >
         <Stack gap={2}>
@@ -63,12 +81,23 @@ export default function DocumentCard({
             sx={{
               width: "100%",
               borderRadius: 4,
-              height: 133,
+              height: { xs: 148, md: 133 },
               bgcolor: "grey.100",
             }}
           >
             <InsertDriveFileIcon sx={{ color: "text.secondary" }} />
-            <Typography color="text.primary">{name}</Typography>
+            <Typography
+              color="text.primary"
+              sx={{
+                overflow: "hidden",
+                display: "-webkit-box",
+                "-webkit-line-clamp": "1",
+                "line-clamp": "1",
+                "-webkit-box-orient": "vertical",
+              }}
+            >
+              {name}
+            </Typography>
           </Stack>
         </Stack>
       </Stack>
