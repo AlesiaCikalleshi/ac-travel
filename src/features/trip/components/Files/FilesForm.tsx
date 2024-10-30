@@ -1,12 +1,13 @@
-import { Fragment, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   Controller,
-  SubmitHandler,
+  type SubmitHandler,
+  type UseFieldArrayUpdate,
   useFieldArray,
   useForm,
 } from "react-hook-form";
 
-import { Stack } from "@mui/material";
+import { FormHelperText, Stack } from "@mui/material";
 
 import { MAX_FILE_SIZE_MB } from "@features/trip/add-trip/components/constants";
 import { DocumentToUpload, TripFile } from "@features/trip/types";
@@ -19,6 +20,7 @@ import UploadFileButton from "./UploadFileButton";
 interface Props {
   defaultFiles: TripFile[];
   onSubmit: (files: TripFile[]) => void;
+  onChange: (files: TripFile[]) => void;
   SubmitComponent: React.ReactNode;
 }
 
@@ -37,6 +39,8 @@ export default function FilesForm(props: Props) {
     onFileRemove,
     onFileAdd,
     uploadProgresses,
+    removingFilePath,
+    uploadErrors,
   } = useFilesUploadForm(props);
 
   return (
@@ -46,7 +50,7 @@ export default function FilesForm(props: Props) {
       noValidate
       direction="row"
       flexWrap="wrap"
-      gap={2}
+      gap={{ xs: 1, md: 2 }}
       sx={{ width: "100%" }}
     >
       <UploadFileButton
@@ -60,18 +64,21 @@ export default function FilesForm(props: Props) {
       {files.map((file, index) => {
         const showCard = Boolean(file?.url || file.storagePath);
 
-        if (!showCard) {
-          return null;
-        }
         return (
-          <Fragment key={file.fileName}>
+          <Stack key={file.fileName} sx={{ height: 260 }}>
             {showCard && (
               <DocumentCard
                 name={file.fileName}
                 url={file.url}
                 onRemoveClick={() => onFileRemove(index)}
                 uploadProgress={uploadProgresses[index]}
+                isRemoving={Boolean(
+                  file.storagePath && removingFilePath === file.storagePath,
+                )}
               />
+            )}
+            {uploadErrors[index] && (
+              <FormHelperText error>{uploadErrors[index]}</FormHelperText>
             )}
             <Controller
               name={`files.${index}`}
@@ -87,7 +94,7 @@ export default function FilesForm(props: Props) {
                 />
               )}
             />
-          </Fragment>
+          </Stack>
         );
       })}
       {props.SubmitComponent}
@@ -96,11 +103,19 @@ export default function FilesForm(props: Props) {
 }
 
 function useFilesUploadForm(props: Props) {
-  const { uploadFiles, uploadProgresses } = useStorage({
+  const {
+    uploadFiles,
+    uploadProgresses,
+    removeFile,
+    isLoading,
+    removingFilePath,
+    uploadErrors,
+  } = useStorage({
     onAllUploadSuccess: (uploadedFiles) => {
       props.onSubmit(uploadedFiles);
     },
   });
+  const disableChange = isLoading || Boolean(removingFilePath);
   const { showErrorMessage } = useToast();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { watch, handleSubmit, control } = useForm<FormInput>({
@@ -114,7 +129,11 @@ function useFilesUploadForm(props: Props) {
     name: "files",
   });
 
+
   const onSubmit: SubmitHandler<FormInput> = (data) => {
+    if (disableChange) {
+      return;
+    }
     const filteredFiles = [...data.files];
     if (!filteredFiles[filteredFiles.length - 1].fileName) {
       filteredFiles.pop();
@@ -123,14 +142,31 @@ function useFilesUploadForm(props: Props) {
   };
 
   const onFileAdd = () => {
+    if (disableChange) {
+      return;
+    }
     if (files.length === 0 || files[files.length - 1]?.fileName) {
       append({ fileName: "" });
     }
     setTimeout(() => fileInputRef.current?.click(), 0);
   };
 
-  const onFileRemove = (index: number) => {
-    remove(index);
+
+  const onFileRemove = async (index: number) => {
+    if (disableChange) {
+      return;
+    }
+
+    const file = files[index];
+    if (file.storagePath) {
+      const wasFileRemoved = await removeFile(file.storagePath);
+      if (wasFileRemoved) {
+        remove(index);
+        props.onChange([...files.slice(0, index), ...files.slice(index + 1)]);
+      }
+    } else {
+      remove(index);
+    }
   };
 
   const onFileInputChange = (
@@ -138,7 +174,6 @@ function useFilesUploadForm(props: Props) {
     onChange: (newFile: DocumentToUpload) => void,
   ) => {
     const file = event.target.files?.[0];
-    console.log(file);
     if (!file) {
       return;
     }
@@ -154,33 +189,12 @@ function useFilesUploadForm(props: Props) {
 
     onChange({
       fileName: file?.name,
+      file,
       url: URL.createObjectURL(file),
     });
   };
 
-  useEffect(
-    () =>
-      files.forEach(async (file, index) => {
-        if (file.url) {
-          return;
-        }
-
-        let url: string | null = null;
-        if (file.storagePath) {
-          url = await getDownloadURL(file.storagePath);
-        } else if (file.file) {
-          url = URL.createObjectURL(file.file);
-        }
-
-        if (url) {
-          update(index, {
-            ...files[index],
-            url,
-          });
-        }
-      }),
-    [files, update],
-  );
+  useFilesUrlsUpdate(files, update);
 
   return {
     onSubmit,
@@ -192,5 +206,29 @@ function useFilesUploadForm(props: Props) {
     fileInputRef,
     onFileAdd,
     uploadProgresses,
+    removingFilePath,
+    uploadErrors,
   };
+}
+
+
+function useFilesUrlsUpdate(
+  files: DocumentToUpload[],
+  update: UseFieldArrayUpdate<FormInput, 'files'>,
+) {
+  useEffect(
+    () =>
+      files.forEach(async (file, index) => {
+        if (!file.url && file.storagePath) {
+          const url = await getDownloadURL(file.storagePath);
+          if (url) {
+            update(index, {
+              ...files[index],
+              url,
+            });
+          }
+        }
+      }),
+    [files, update],
+  );
 }
