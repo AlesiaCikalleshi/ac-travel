@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { RootState } from "@store/index";
+import { type RootState } from "@store/index";
 
-import { Trip } from "../../types";
+import type { Trip } from "../../types";
 
 interface TripWizardState {
   trip: Trip;
@@ -42,24 +42,29 @@ export const tripWizardSlice = createSlice({
     },
     previousStep: (state) => {
       if (state.currentStep === 0) {
-        throw new Error("You are already on the first step. You can't go back");
+        throw new Error(
+          "You are already on the first step. You can't go back.",
+        );
       }
       state.currentStep -= 1;
     },
-    setTravelInfromation: (
+    setTravelInformation: (
       state,
       action: PayloadAction<
         Pick<
           Trip,
-          "startDate" | "endDate" | "description" | "name" | "previewImage"
+          "startDate" | "endDate" | "name" | "previewImage" | "description"
         >
       >,
     ) => {
       state.trip.name = action.payload.name;
       state.trip.description = action.payload.description;
-      state.trip.previewImage = action.payload.previewImage;
       state.trip.startDate = action.payload.startDate;
       state.trip.endDate = action.payload.endDate;
+      state.trip.previewImage = action.payload.previewImage;
+    },
+    setPreviewImage: (state, action: PayloadAction<Trip["previewImage"]>) => {
+      state.trip.previewImage = action.payload;
     },
     setLocationFrom: (state, action: PayloadAction<Trip["locationFrom"]>) => {
       state.trip.locationFrom = action.payload;
@@ -76,6 +81,9 @@ export const tripWizardSlice = createSlice({
     setDocuments: (state, action: PayloadAction<Trip["documents"]>) => {
       state.trip.documents = action.payload;
     },
+    setPhotos: (state, action: PayloadAction<Trip["photos"]>) => {
+      state.trip.photos = action.payload;
+    },
   },
   //The PURGE action is used to clear the persisted state from storage.
   // When this action is triggered, it will execute the provided function.
@@ -89,12 +97,14 @@ export const tripWizardSlice = createSlice({
 export const {
   nextStep,
   previousStep,
-  setTravelInfromation,
+  setTravelInformation,
+  setPreviewImage,
   setLocationFrom,
   setDestinations,
   setPlaces,
   setExpenses,
   setDocuments,
+  setPhotos,
 } = tripWizardSlice.actions;
 
 export const selectCurrentStep = (state: RootState) =>

@@ -20,7 +20,7 @@ import type { Trip } from "../../../types";
 import {
   nextStep,
   selectWizardTrip,
-  setTravelInfromation,
+  setTravelInformation,
 } from "../../store/tripWizardSlice";
 import Pagination from "../Navigation/Pagination";
 import DateSelectInput from "./DateSelectInput";
@@ -214,7 +214,7 @@ function useTravelInfoForm({
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
     dispatch(nextStep());
-    dispatch(setTravelInfromation(data));
+    dispatch(setTravelInformation(data));
   };
 
   return {
