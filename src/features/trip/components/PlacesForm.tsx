@@ -36,7 +36,7 @@ export default function PlacesForm(props: Props) {
         <Stack key={place.id}>
           <Stack direction="row" gap={0.25} key={place.id}>
             <Controller
-              name={`places.${index}.name`}
+              name={`places.${index}.isChecked`}
               control={control}
               render={({ field }) => (
                 <Checkbox
