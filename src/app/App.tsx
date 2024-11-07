@@ -6,6 +6,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
+import ErrorBoundary from "@config/components/ErrorBoundary";
 import { AppRouter } from "@config/routes";
 import { theme } from "@config/styles";
 import Loader from "@features/ui/logo/Loader";
@@ -17,17 +18,19 @@ export default function App() {
   useAuthStateSubscription();
 
   return (
-    <PersistGate loading={<Loader />} persistor={persistor}>
-      <BrowserRouter>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <SnackbarProvider>
-              <AppRouter />
-            </SnackbarProvider>
-          </ThemeProvider>
-        </LocalizationProvider>
-      </BrowserRouter>
-    </PersistGate>
+    <ErrorBoundary>
+      <PersistGate loading={<Loader />} persistor={persistor}>
+        <BrowserRouter>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <SnackbarProvider>
+                <AppRouter />
+              </SnackbarProvider>
+            </ThemeProvider>
+          </LocalizationProvider>
+        </BrowserRouter>
+      </PersistGate>
+    </ErrorBoundary>
   );
 }
