@@ -36,7 +36,7 @@ function CustomTabPanel({
   );
 }
 
-export default function TripTabs({ trip }: Props) {
+export default function TripTabs({ trip, onUpdate }: Props) {
   const [selectedTab, setSelectedTab] = useState(0);
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {

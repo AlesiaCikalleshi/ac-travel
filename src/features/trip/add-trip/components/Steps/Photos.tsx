@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 
 import { AppRoutes } from "@config/routes";
+import { useAddTripMutation } from "@features/trip/store/tripApi";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
 import FilesForm from "../../../components/Files/FilesForm";
-import { useAddTripMutation } from "../../../store/tripsApi";
 import type { TripFile } from "../../../types";
 import {
   resetWizard,
