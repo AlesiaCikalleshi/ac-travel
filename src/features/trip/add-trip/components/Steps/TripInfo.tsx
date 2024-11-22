@@ -12,7 +12,7 @@ import {
 
 import { Colors } from "@config/styles";
 import PreviewImageDialog from "@features/trip/components/PreviewImageDialog";
-import { TRIP_PREVIEW_IMAGES } from "@features/trip/data";
+import usePreviewImageSrc from "@features/trip/hooks/usePreviewImageHook";
 import useDialog from "@hooks/useDialog";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
@@ -33,7 +33,7 @@ interface FormInput {
   endDate: Trip["endDate"];
 }
 
-export default function TravelInfo() {
+export default function TripInfo() {
   const { isOpen, open, close } = useDialog();
   const {
     onSubmit,
@@ -132,6 +132,7 @@ export default function TravelInfo() {
               control={control}
               requiredErrorText="Please specify start date!"
               maxDate={formValues.endDate}
+              fullWidth
             />
             <DateSelectInput
               label="End Date"
@@ -139,6 +140,7 @@ export default function TravelInfo() {
               control={control}
               requiredErrorText="Please specify end date!"
               minDate={formValues.startDate}
+              fullWidth
             />
           </Stack>
         </Stack>
@@ -200,11 +202,7 @@ function useTravelInfoForm({
     },
   });
   const formValues = watch();
-  const previewImageSrc = formValues.previewImage?.templateImageId
-    ? TRIP_PREVIEW_IMAGES.find(
-        (image) => image.id === formValues.previewImage?.templateImageId,
-      )
-    : null;
+  const previewImageSrc = usePreviewImageSrc(formValues.previewImage);
 
   const onPreviewImageSave = (previewImage: Trip["previewImage"]) => {
     closePreviewImageDialog();
