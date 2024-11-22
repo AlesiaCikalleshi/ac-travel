@@ -30,6 +30,7 @@ function CustomTabPanel({
       hidden={value !== index}
       id={`trip-edit-tabpanel-${index}`}
       aria-labelledby={`trip-edit-tab-${index}`}
+      style={{ minHeight: "90vh" }}
     >
       {children}
     </div>
