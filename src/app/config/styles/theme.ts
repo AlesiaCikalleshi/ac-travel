@@ -91,11 +91,27 @@ const theme = createTheme({
         },
       },
     },
-    MuiFormControl: {
+    MuiBreadcrumbs: {
       defaultProps: {
-        sx: {
-          mb: 0,
-          mt: 0,
+        style: {
+          fontSize: "1rem",
+          lineHeight: "1.5rem",
+        },
+      },
+    },
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          "& button": {
+            minHeight: 65,
+          },
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          color: Colors.disabled,
         },
       },
     },
