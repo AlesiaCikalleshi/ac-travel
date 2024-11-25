@@ -25,6 +25,7 @@ interface Props {
   title: string;
   primaryButtonText: string;
   isForm?: boolean;
+  isLoading?: boolean;
   maxWidth?: number;
 }
 
@@ -37,6 +38,7 @@ export default function AppDialog({
   primaryButtonText,
   isForm,
   maxWidth,
+  isLoading,
 }: Props) {
   const { md } = useBreakpoints();
 
@@ -102,6 +104,7 @@ export default function AppDialog({
             type={isForm ? "submit" : "button"}
             fullWidth
             onClick={onPrimaryButtonClick}
+            loading={isLoading}
           >
             {primaryButtonText}
           </AppButton>
