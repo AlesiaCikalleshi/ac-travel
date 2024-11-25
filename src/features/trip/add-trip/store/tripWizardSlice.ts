@@ -106,7 +106,7 @@ export const {
   nextStep,
   previousStep,
   setTravelInformation,
-  // setPreviewImage,
+  setPreviewImage,
   setLocationFrom,
   setDestinations,
   setPlaces,
