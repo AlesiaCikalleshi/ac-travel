@@ -12,6 +12,7 @@ export default function PackingLists({ trip, onUpdate }: Props) {
   const onChange = (packingLists: Trip['packingLists']) => {
     onUpdate({ packingLists });
   };
+  
   return (
     <ContentCard title="Packing List">
       <PackingListForm
