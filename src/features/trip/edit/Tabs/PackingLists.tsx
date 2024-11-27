@@ -8,7 +8,7 @@ interface Props {
   onUpdate: (data: Partial<Trip>) => void;
 }
 
-export default function PaclingLists({ trip, onUpdate }: Props) {
+export default function PackingLists({ trip, onUpdate }: Props) {
   const onChange = (packingLists: Trip['packingLists']) => {
     onUpdate({ packingLists });
   };
