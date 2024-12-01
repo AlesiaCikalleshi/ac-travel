@@ -1,6 +1,6 @@
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import MobileStepper from '@mui/material/MobileStepper';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { MobileStepper } from '@mui/material';
 
 import AppButton from '@features/ui/AppButton';
 import { useBreakpoints } from '@hooks/useBreakpoints';
@@ -16,7 +16,6 @@ interface Props {
 export default function Pagination({ isLoading }: Props) {
   const dispatch = useAppDispatch();
   const { md, lg } = useBreakpoints();
-  const maxSteps = WIZARD_STEPS.length;
   const currentStep = useAppSelector(selectCurrentStep);
 
   const onBackButtonClick = () => dispatch(previousStep());
@@ -24,14 +23,14 @@ export default function Pagination({ isLoading }: Props) {
   return (
     <MobileStepper
       variant={lg ? 'dots' : 'text'}
-      steps={maxSteps}
+      steps={WIZARD_STEPS.length}
       position="static"
       activeStep={currentStep}
       nextButton={
         <AppButton
           fullWidth={!md}
           type="submit"
-          endIcon={<KeyboardArrowRight />}
+          endIcon={<ArrowForwardIcon />}
           loading={isLoading}
         >
           Next
@@ -42,7 +41,7 @@ export default function Pagination({ isLoading }: Props) {
           onClick={onBackButtonClick}
           fullWidth={!md}
           variant="outlined"
-          startIcon={<KeyboardArrowLeft />}
+          startIcon={<ArrowBackIcon />}
           sx={{
             visibility: currentStep === 0 ? 'hidden' : 'visible',
           }}

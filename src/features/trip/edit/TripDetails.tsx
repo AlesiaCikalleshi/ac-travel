@@ -13,10 +13,10 @@ import { AppRoutes } from '@config/routes';
 import { Colors } from '@config/styles';
 import AppButton from '@features/ui/AppButton';
 
-import { useGetTripQuery, useUpdateTripMutation } from '../store/tripApi';
+import { useGetTripQuery, useUpdateTripMutation } from '../store/tripsApi';
 import type { Trip } from '../types';
-import Hero from './Hero';
 import TripTabs from './Tabs/TripTabs';
+import Hero from './components/Hero/Hero';
 
 export default function TripDetails() {
   const { tripId } = useParams();

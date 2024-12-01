@@ -80,28 +80,16 @@ export default function PhotoCard({
           opacity: uploadProgress ? 0.2 : 1,
         }}
       >
-        <Stack
-          gap={2}
-          alignItems="center"
-          justifyContent="center"
-          sx={{
+        <img
+          src={src ?? ''}
+          alt="custom photo"
+          style={{
             width: '100%',
-            borderRadius: 4,
-            height: { xs: 148, md: 133 },
-            bgcolor: 'grey.100',
+            height: '100%',
+            objectFit: 'cover',
+            aspectRatio: '1/1',
           }}
-        >
-          <img
-            src={src ?? ''}
-            alt="custom photo"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              aspectRatio: '1/1',
-            }}
-          />
-        </Stack>
+        />
       </Stack>
     </Box>
   );

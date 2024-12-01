@@ -10,11 +10,12 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Stack, TextField } from '@mui/material';
 
-import { Trip } from '@features/trip/types';
 import AppButton from '@features/ui/AppButton';
 import AppIconButton from '@features/ui/AppIconButton';
 import { useAppDispatch, useAppSelector } from '@store/index';
 
+import { MAX_TRIP_DESTINATIONS } from '../../../constants';
+import type { Trip } from '../../../types';
 import {
   nextStep,
   selectWizardTrip,
@@ -22,14 +23,13 @@ import {
   setLocationFrom,
 } from '../../store/tripWizardSlice';
 import Pagination from '../Navigation/Pagination';
-import { MAX_TRIP_DESTINATION } from '../constants';
 
 interface FormInput {
   locationFrom: Trip['locationFrom'];
   destinations: Trip['destinations'];
 }
 
-export default function Destination() {
+export default function Destinations() {
   const {
     onSubmit,
     control,
@@ -51,16 +51,19 @@ export default function Destination() {
         <Controller
           name="locationFrom"
           control={control}
-          rules={{ required: 'Please specify your location!' }}
+          rules={{ required: 'Please specify  where your trip starts!' }}
           render={({ field: { ref, ...field }, fieldState }) => (
             <TextField
+              autoFocus
+              inputProps={{
+                maxLength: 25,
+              }}
               inputRef={ref}
               margin="normal"
               required
               fullWidth
               id="locationFrom"
               label="From"
-              autoFocus
               variant="standard"
               helperText={fieldState.error?.message}
               error={Boolean(fieldState.error)}
@@ -78,8 +81,12 @@ export default function Destination() {
             <Controller
               name={`destinations.${index}.name`}
               control={control}
+              rules={{ required: 'Please specify the destination!' }}
               render={({ field: { ref, ...field }, fieldState }) => (
                 <TextField
+                  inputProps={{
+                    maxLength: 25,
+                  }}
                   inputRef={ref}
                   margin="normal"
                   required
@@ -95,9 +102,7 @@ export default function Destination() {
             />
             {index !== 0 && (
               <AppIconButton
-                onClick={() => {
-                  removeDestination(index);
-                }}
+                onClick={() => removeDestination(index)}
                 aria-label="Remove Destination"
               >
                 <DeleteIcon />
@@ -106,7 +111,7 @@ export default function Destination() {
           </Stack>
         ))}
       </Stack>
-      {destinations.length < MAX_TRIP_DESTINATION && (
+      {destinations.length < MAX_TRIP_DESTINATIONS && (
         <AppButton
           variant="text"
           onClick={addDestination}
@@ -121,8 +126,8 @@ export default function Destination() {
 }
 
 function useDestinationsForm() {
-  const trip = useAppSelector(selectWizardTrip);
   const dispatch = useAppDispatch();
+  const trip = useAppSelector(selectWizardTrip);
   const { control, handleSubmit } = useForm<FormInput>({
     defaultValues: {
       locationFrom: trip.locationFrom,
@@ -146,7 +151,7 @@ function useDestinationsForm() {
     remove(index);
   };
 
-  const onSubmit: SubmitHandler<FormInput> = async (data) => {
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
     dispatch(setLocationFrom(data.locationFrom));
     dispatch(setDestinations(data.destinations));
     dispatch(nextStep());

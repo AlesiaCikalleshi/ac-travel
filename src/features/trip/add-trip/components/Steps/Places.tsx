@@ -1,13 +1,13 @@
-import PlacesForm from "@features/trip/components/PlacesForm";
-import { Trip } from "@features/trip/types";
-import { useAppDispatch, useAppSelector } from "@store/index";
+import { useAppDispatch, useAppSelector } from '@store/index';
 
+import PlacesForm from '../../../components/PlacesForm';
+import type { Trip } from '../../../types';
 import {
   nextStep,
   selectWizardTrip,
   setPlaces,
-} from "../../store/tripWizardSlice";
-import Pagination from "../Navigation/Pagination";
+} from '../../store/tripWizardSlice';
+import Pagination from '../Navigation/Pagination';
 
 export default function Places() {
   const { onSubmit, places } = usePlacesForm();
@@ -26,7 +26,7 @@ function usePlacesForm() {
   const trip = useAppSelector(selectWizardTrip);
   const dispatch = useAppDispatch();
 
-  const onSubmit = (places: Trip["places"]) => {
+  const onSubmit = (places: Trip['places']) => {
     dispatch(setPlaces(places));
     dispatch(nextStep());
   };

@@ -1,33 +1,28 @@
-import { useCallback, useEffect } from "react";
+import debounce from 'lodash.debounce';
+import { useCallback, useEffect } from 'react';
 import {
   Controller,
   type SubmitHandler,
-  UseFormWatch,
+  type UseFormWatch,
   useFieldArray,
   useForm,
-} from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
+} from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
-import {
-  Checkbox,
-  FormHelperText,
-  InputBase,
-  Stack,
-  debounce,
-} from "@mui/material";
+import { Checkbox, FormHelperText, InputBase, Stack } from '@mui/material';
 
-import { Trip } from "@features/trip/types";
+import type { Trip } from '../types';
 
 interface Props {
-  defaultPlaces: Trip["places"];
-  onSubmit?: (places: Trip["places"]) => void;
-  onChange?: (newPlaces: Trip["places"]) => void;
+  defaultPlaces: Trip['places'];
+  onSubmit?: (places: Trip['places']) => void;
+  onChange?: (newPlaces: Trip['places']) => void;
   autoFocus?: boolean;
   SubmitComponent?: React.ReactNode;
 }
 
 interface FormInput {
-  places: Trip["places"];
+  places: Trip['places'];
 }
 
 export default function PlacesForm(props: Props) {
@@ -45,7 +40,7 @@ export default function PlacesForm(props: Props) {
       component="form"
       onSubmit={handleSubmit(onFormSubmit)}
       noValidate
-      sx={{ width: "100%" }}
+      sx={{ width: '100%' }}
       gap={1}
     >
       {places.map((place, index) => (
@@ -56,27 +51,27 @@ export default function PlacesForm(props: Props) {
               control={control}
               render={({ field }) => (
                 <Checkbox
-                  checked={field?.value}
+                  checked={field.value}
                   onChange={field.onChange}
-                  inputProps={{ "aria-label": "Is place visited checkbox" }}
+                  inputProps={{ 'aria-label': 'Is place visited checkbox' }}
                 />
               )}
             />
             <Controller
               name={`places.${index}.name`}
               control={control}
-              rules={{ required: "Please specify the place!" }}
+              rules={{ required: 'Please specify the place!' }}
               render={({ field: { ref, ...field } }) => (
                 <InputBase
                   id={`${place}.${index}`}
                   inputRef={ref}
                   placeholder="Type here..."
-                  inputProps={{ "aria-label": "Place Name" }}
+                  inputProps={{ 'aria-label': 'Place Name' }}
                   autoFocus={props.autoFocus && index === places.length - 1}
                   onKeyDown={(event) => onInputKeyDown(event, index)}
                   sx={{
-                    textDecoration: place.isChecked ? "line-through" : "none",
-                    width: "100%",
+                    textDecoration: place.isChecked ? 'line-through' : 'none',
+                    width: '100%',
                   }}
                   {...field}
                 />
@@ -107,24 +102,24 @@ function usePlacesForm({ defaultPlaces, onSubmit, onChange }: Props) {
       places: defaultPlaces,
     },
   });
-  const places = watch("places");
+  const places = watch('places');
   const { insert, remove } = useFieldArray({
     control,
-    name: "places",
+    name: 'places',
   });
 
   const onInputKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number,
   ) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault();
       insert(
         index + 1,
-        { id: uuidv4(), name: "", isChecked: false },
+        { id: uuidv4(), name: '', isChecked: false },
         { shouldFocus: true },
       );
-    } else if (event.key === "Backspace") {
+    } else if (event.key === 'Backspace') {
       if (places[index].name.length === 0 && places.length > 1) {
         event.preventDefault();
         remove(index);
@@ -150,18 +145,18 @@ function usePlacesForm({ defaultPlaces, onSubmit, onChange }: Props) {
 
 function useWatchChange(
   watch: UseFormWatch<FormInput>,
-  onChange?: (newPlaces: Trip["places"]) => void,
+  onChange?: (newPlaces: Trip['places']) => void,
 ) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const onUpdateDebounced = useCallback(
-    debounce((data: Trip["places"]) => {
+    debounce((data: Trip['places']) => {
       onChange?.(data);
     }, 500),
     [],
   );
   useEffect(() => {
     const formUpdateSubscription = watch((newValues) => {
-      onUpdateDebounced(newValues.places as Trip["places"]);
+      onUpdateDebounced(newValues.places as Trip['places']);
     });
     return () => formUpdateSubscription.unsubscribe();
   }, [onUpdateDebounced, watch]);

@@ -2,7 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { Box, CircularProgress, Link, Stack, Typography } from '@mui/material';
 
 import { AppRoutes } from '@config/routes';
-import { useGetTripsQuery } from '@features/trip/store/tripApi';
+import { useGetTripsQuery } from '@features/trip/store/tripsApi';
 import AppButton from '@features/ui/AppButton';
 
 import NoTrips from './NoTrips';

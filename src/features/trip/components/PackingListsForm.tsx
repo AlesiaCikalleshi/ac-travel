@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import debounce from 'lodash.debounce';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Controller,
   type SubmitHandler,
+  type UseFormWatch,
   useFieldArray,
   useForm,
 } from 'react-hook-form';
@@ -20,20 +22,22 @@ import {
 } from '@mui/material';
 
 import { Colors } from '@config/styles';
-import { Trip } from '@features/trip/types';
 import AppButton from '@features/ui/AppButton';
+
+import type { Trip } from '../types';
 
 interface Props {
   defaultPackingLists: Trip['packingLists'];
-  onSubmit: SubmitHandler<FormInput>;
-  SubmitComponent: React.ReactNode;
+  onChange?: (newPackingLists: Trip['packingLists']) => void;
+  onSubmit?: SubmitHandler<FormInput>;
+  SubmitComponent?: React.ReactNode;
 }
 
 interface FormInput {
   packingLists: Trip['packingLists'];
 }
 
-export default function PackingListForm(props: Props) {
+export default function PackingListsForm(props: Props) {
   const {
     packingLists,
     handleSubmit,
@@ -49,7 +53,7 @@ export default function PackingListForm(props: Props) {
   return (
     <Stack
       component="form"
-      onSubmit={handleSubmit(props.onSubmit)}
+      onSubmit={props.onSubmit ? handleSubmit(props.onSubmit) : undefined}
       noValidate
       sx={{ width: '100%' }}
       gap={3}
@@ -73,7 +77,7 @@ export default function PackingListForm(props: Props) {
           startIcon={<AddIcon />}
           sx={{ textTransform: 'uppercase' }}
         >
-          Add checklist
+          Add Checklist
         </AppButton>
       </Stack>
 
@@ -85,7 +89,10 @@ export default function PackingListForm(props: Props) {
             xs={1}
             sx={{
               borderRight: { xs: 'none', md: 1 },
-              borderBottom: { xs: 1, md: 'none' },
+              borderBottom: {
+                xs: packingListIndex === packingLists.length - 1 ? 0 : 1,
+                md: 'none',
+              },
               borderColor: { xs: 'grey.200', md: 'grey.200' },
               pb: { xs: 2, md: 0 },
               px: { md: 2 },
@@ -129,7 +136,6 @@ export default function PackingListForm(props: Props) {
                     control={control}
                     render={({ field: { ref, ...field } }) => (
                       <InputBase
-                        id={`${packingList.name}.${packingListIndex}.items.${itemIndex}`}
                         inputRef={ref}
                         placeholder="Type here..."
                         inputProps={{ 'aria-label': 'Packing list item name' }}
@@ -157,7 +163,7 @@ export default function PackingListForm(props: Props) {
   );
 }
 
-function usePackingListsForm({ defaultPackingLists }: Props) {
+function usePackingListsForm({ defaultPackingLists, onChange }: Props) {
   const [newListName, setNewListName] = useState('');
   const { watch, handleSubmit, control, setFocus } = useForm<FormInput>({
     defaultValues: {
@@ -243,6 +249,7 @@ function usePackingListsForm({ defaultPackingLists }: Props) {
       }
     }
   };
+  useWatchChange(watch, onChange);
   return {
     control,
     handleSubmit,
@@ -254,4 +261,28 @@ function usePackingListsForm({ defaultPackingLists }: Props) {
     onAddPackingListClick,
     onRemovePackingListClick,
   };
+}
+
+function useWatchChange(
+  watch: UseFormWatch<FormInput>,
+
+  onChange?: (newPackingLists: Trip['packingLists']) => void,
+) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  const onUpdateDebounced = useCallback(
+    debounce((data: Trip['packingLists']) => {
+      onChange?.(data);
+    }, 500),
+
+    [],
+  );
+
+  useEffect(() => {
+    const formUpdateSubscription = watch((newValues) => {
+      onUpdateDebounced(newValues.packingLists as Trip['packingLists']);
+    });
+
+    return () => formUpdateSubscription.unsubscribe();
+  }, [onUpdateDebounced, watch]);
 }

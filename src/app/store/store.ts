@@ -14,7 +14,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import authReducer from '@features/auth/store/authSlice';
 import tripWizardReducer from '@features/trip/add-trip/store/tripWizardSlice';
-import { tripsApi } from '@features/trip/store/tripApi';
+import { tripsApi } from '@features/trip/store/tripsApi';
 
 import { rtkQueryErrorLogger } from './middleware/errorMiddleware';
 

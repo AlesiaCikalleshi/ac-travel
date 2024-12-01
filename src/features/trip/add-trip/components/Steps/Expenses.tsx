@@ -3,13 +3,13 @@ import { type SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import AddIcon from '@mui/icons-material/Add';
 import { Stack } from '@mui/material';
 
-import ExpenseDialog from '@features/trip/components/Expenses/ExpenseDialog';
 import ExpensesTable from '@features/trip/components/Expenses/ExpensesTable';
 import type { Expense, Trip } from '@features/trip/types';
 import AppButton from '@features/ui/AppButton';
 import useDialog from '@hooks/useDialog';
 import { useAppDispatch, useAppSelector } from '@store/index';
 
+import ExpenseDialog from '../../../components/Expenses/ExpenseDialog';
 import {
   nextStep,
   selectWizardTrip,
@@ -21,7 +21,7 @@ interface FormInput {
   expenses: Trip['expenses'];
 }
 
-export default function expenses() {
+export default function Expenses() {
   const { open, close, isOpen } = useDialog();
   const { onSubmit, expenses, handleSubmit, addExpense, removeExpense } =
     useExpensesForm({
@@ -46,7 +46,11 @@ export default function expenses() {
       </AppButton>
       <ExpenseDialog isOpen={isOpen} onClose={close} onSave={addExpense} />
       {expenses.length > 0 && (
-        <ExpensesTable expenses={expenses} onDelete={removeExpense} />
+        <ExpensesTable
+          expenses={expenses}
+          onDelete={removeExpense}
+          autoScrollOnChange
+        />
       )}
       <Pagination />
     </Stack>
@@ -81,7 +85,7 @@ function useExpensesForm({
     remove(expenses.findIndex((expense) => expense.id === expenseId));
   };
 
-  const onSubmit: SubmitHandler<FormInput> = async (data) => {
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
     dispatch(setExpenses(data.expenses));
     dispatch(nextStep());
   };

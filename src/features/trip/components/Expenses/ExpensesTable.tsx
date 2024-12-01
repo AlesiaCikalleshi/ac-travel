@@ -13,40 +13,50 @@ import {
   Typography,
 } from '@mui/material';
 
-import { EXPENSE_ICON_BY_CATEGORY } from '@features/trip/data';
-import { Trip } from '@features/trip/types';
 import AppIconButton from '@features/ui/AppIconButton';
 import { useBreakpoints } from '@hooks/useBreakpoints';
 
+import { EXPENSE_ICON_BY_CATEGORY } from '../../data';
+import type { Trip } from '../../types';
 import ExpenseCategoryIcon from './ExpenseCategoryIcon';
 
 interface Props {
   expenses: Trip['expenses'];
   onDelete: (expenseId: string) => void;
+  autoScrollOnChange?: boolean;
 }
 
-export default function ExpensesTable({ expenses, onDelete }: Props) {
+export default function ExpensesTable({
+  expenses,
+  onDelete,
+  autoScrollOnChange,
+}: Props) {
   const { md } = useBreakpoints();
   const bottomBoxRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (bottomBoxRef.current) {
+    if (bottomBoxRef.current && autoScrollOnChange) {
       bottomBoxRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [expenses]);
+  }, [expenses, autoScrollOnChange]);
 
   return (
     <TableContainer>
       <Table aria-label="Expenses table">
         <TableHead>
           <TableRow>
-            <TableCell sx={{ width: { xs: '30%', md: '25%' } }}>
+            <TableCell
+              sx={{
+                minWidth: { xs: 140, md: 162 },
+                width: { xs: '30%', md: '25%' },
+              }}
+            >
               <Typography component="span" variant="subtitle2">
                 Category
               </Typography>
             </TableCell>
             {md && (
-              <TableCell>
+              <TableCell sx={{ width: '100%' }}>
                 <Typography component="span" variant="subtitle2">
                   Description
                 </Typography>
@@ -115,9 +125,7 @@ export default function ExpensesTable({ expenses, onDelete }: Props) {
 
                 <TableCell>
                   <AppIconButton
-                    onClick={() => {
-                      onDelete(expense.id);
-                    }}
+                    onClick={() => onDelete(expense.id)}
                     aria-label="Remove Expense"
                   >
                     <DeleteIcon />

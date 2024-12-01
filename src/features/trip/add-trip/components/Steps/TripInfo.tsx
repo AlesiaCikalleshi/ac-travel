@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
@@ -11,12 +12,13 @@ import {
 } from '@mui/material';
 
 import { Colors } from '@config/styles';
-import PreviewImageDialog from '@features/trip/components/PreviewImageDialog';
-import usePreviewImageSrc from '@features/trip/hooks/usePreviewImageHook';
+import { useBreakpoints } from '@hooks/useBreakpoints';
 import useDialog from '@hooks/useDialog';
 import { useAppDispatch, useAppSelector } from '@store/index';
 
 import DateSelectInput from '../../../../ui/form/DateSelectInput';
+import PreviewImageDialog from '../../../components/PreviewImageDialog';
+import { usePreviewImageSrc } from '../../../hooks/usePreviewImageSrc';
 import type { Trip } from '../../../types';
 import {
   nextStep,
@@ -35,8 +37,10 @@ interface FormInput {
 }
 
 export default function TripInfo() {
+  const { md } = useBreakpoints();
   const { isOpen, open, close } = useDialog();
   const {
+    tripId,
     onSubmit,
     control,
     handleSubmit,
@@ -83,7 +87,7 @@ export default function TripInfo() {
                   objectFit: 'cover',
                   aspectRatio: '1/1',
                 }}
-                // src={previewImageSrc}
+                src={previewImageSrc}
                 alt="Trip preview"
               />
             ) : (
@@ -120,7 +124,7 @@ export default function TripInfo() {
                 fullWidth
                 id="name"
                 label="Trip Name"
-                autoFocus
+                autoFocus={md}
                 variant="standard"
                 helperText={fieldState.error?.message}
                 error={Boolean(fieldState.error)}
@@ -136,6 +140,15 @@ export default function TripInfo() {
               requiredErrorText="Please specify start date!"
               maxDate={formValues.endDate}
               fullWidth
+              validate={{
+                startDate: (startDate) =>
+                  !startDate ||
+                  (startDate &&
+                    formValues.endDate &&
+                    startDate < formValues.endDate)
+                    ? undefined
+                    : 'Start date should be before end date!',
+              }}
             />
             <DateSelectInput
               label="End Date"
@@ -144,6 +157,15 @@ export default function TripInfo() {
               requiredErrorText="Please specify end date!"
               minDate={formValues.startDate}
               fullWidth
+              validate={{
+                endDate: (endDate) =>
+                  !endDate ||
+                  (endDate &&
+                    formValues.startDate &&
+                    formValues.startDate < endDate)
+                    ? undefined
+                    : 'End date should be after start date!',
+              }}
             />
           </Stack>
         </Stack>
@@ -163,7 +185,7 @@ export default function TripInfo() {
             maxRows={6}
             inputProps={{ maxLength: 200 }}
             helperText={
-              fieldState.error?.message ?? `${field.value?.length}/200`
+              fieldState.error?.message ?? `${field.value.length}/200`
             }
             error={Boolean(fieldState.error)}
             {...field}
@@ -172,6 +194,7 @@ export default function TripInfo() {
       />
       <Pagination />
       <PreviewImageDialog
+        tripId={tripId}
         key={previewImageSrc}
         isOpen={isOpen}
         onClose={close}
@@ -218,16 +241,23 @@ function useTravelInfoForm({
     trigger('previewImage');
   };
 
-  const onSubmit: SubmitHandler<FormInput> = async (data) => {
-    dispatch(nextStep());
-    dispatch(setTravelInformation(data));
-  };
-
   const onPreviewImageChange = (previewImage: Trip['previewImage']) => {
     dispatch(setPreviewImage(previewImage));
     setValue('previewImage', previewImage);
   };
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
+    dispatch(setTravelInformation(data));
 
+    dispatch(nextStep());
+  };
+
+  useEffect(() => {
+    if (formValues.startDate && formValues.endDate) {
+      trigger('startDate');
+
+      trigger('endDate');
+    }
+  }, [formValues.startDate, formValues.endDate, trigger]);
   return {
     onSubmit,
     control,
@@ -238,5 +268,6 @@ function useTravelInfoForm({
     previewImageSrc,
     onPreviewImageSave,
     onPreviewImageChange,
+    tripId: trip.id,
   };
 }
