@@ -54,6 +54,7 @@ export default function PackingListsForm(props: Props) {
     <Stack
       component="form"
       onSubmit={props.onSubmit ? handleSubmit(props.onSubmit) : undefined}
+      onSubmit={props.onSubmit ? handleSubmit(props.onSubmit) : undefined}
       noValidate
       sx={{ width: '100%' }}
       gap={3}

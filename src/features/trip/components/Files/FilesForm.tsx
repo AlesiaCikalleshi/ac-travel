@@ -175,6 +175,7 @@ function useFilesUploadForm(props: Props) {
   } = useStorage({
     onAllUploadSuccess: (uploadedFiles) => {
       props.onSubmit?.(uploadedFiles);
+      props.onSubmit?.(uploadedFiles);
     },
 
     onOneUploadSuccess: (index, uploadedFile) => {
@@ -191,6 +192,7 @@ function useFilesUploadForm(props: Props) {
 
     if (!data?.files || data.files.length === 0) {
       props.onSubmit?.([]);
+      props.onSubmit?.([]);
       return;
     }
 
@@ -199,6 +201,7 @@ function useFilesUploadForm(props: Props) {
     if (!filteredFiles[filteredFiles.length - 1].fileName) {
       filteredFiles.pop();
     }
+    uploadFiles(`${props.type}s/${props.tripId}`, filteredFiles);
     uploadFiles(`${props.type}s/${props.tripId}`, filteredFiles);
   };
 
@@ -268,6 +271,7 @@ function useFilesUploadForm(props: Props) {
     }
 
     const newFile = {
+    const newFile = {
       fileName: file?.name,
       file,
       url: URL.createObjectURL(file),
@@ -321,6 +325,38 @@ function useFilesUrlsUpdate(
       }),
     [files, update],
   );
+}
+
+function useWatchChange(
+  watch: UseFormWatch<FormInput>,
+  files: TripFile[],
+  onChange?: (data: TripFile[]) => void,
+) {
+  const previousFiles = useRef<TripFile[]>(
+    files.map((file) => ({
+      storagePath: file!.storagePath!,
+      fileName: file!.fileName!,
+    })),
+  );
+
+  useEffect(() => {
+    const formUpdateSubscription = watch((newValues) => {
+      const parsedFiles =
+        newValues.files
+          ?.filter((file) => Boolean(file?.storagePath))
+          .map((file) => ({
+            storagePath: file!.storagePath!,
+            fileName: file!.fileName!,
+          })) ?? [];
+
+      if (!isEqual(parsedFiles, previousFiles.current)) {
+        previousFiles.current = parsedFiles;
+        onChange?.(parsedFiles);
+      }
+    });
+
+    return () => formUpdateSubscription.unsubscribe();
+  }, [watch, onChange]);
 }
 
 function useWatchChange(

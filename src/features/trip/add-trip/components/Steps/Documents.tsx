@@ -10,15 +10,15 @@ import {
 import Pagination from '../Navigation/Pagination';
 
 export default function Documents() {
-  const { documents, onSubmit, onFileStorageRemoval, tripId } =
-    useDocumentsForm();
+  const { documents, onSubmit, onFileStorageRemoval } = useDocumentsForm();
+
   return (
     <FilesForm
       tripId={tripId}
       defaultFiles={documents}
       onSubmit={onSubmit}
       SubmitComponent={<Pagination />}
-      onFileStorageRemoval={onFileStorageRemoval}
+      onChange={onFileStorageRemoval}
       type="document"
     />
   );

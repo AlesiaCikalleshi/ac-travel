@@ -24,6 +24,7 @@ export default function DocumentCard({
   uploadProgress,
   isRemoving,
 }: Props) {
+  
   return (
     <Box
       sx={{

@@ -32,6 +32,7 @@ export default function PreviewImageDialog({
   defaultPreviewImageSrc,
   onChange,
   tripId,
+  tripId,
 }: Props) {
   const { md } = useBreakpoints();
   const { showErrorMessage } = useToast();
@@ -83,6 +84,7 @@ export default function PreviewImageDialog({
       !selectedPreviewImage.storagePath &&
       customImageFile
     ) {
+      uploadFiles(`preview-images/${tripId}`, [
       uploadFiles(`preview-images/${tripId}`, [
         { fileName: customImageFile.name, file: customImageFile },
       ]);
