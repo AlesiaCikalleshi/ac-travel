@@ -21,7 +21,7 @@ interface FormInput {
   expenses: Trip["expenses"];
 }
 
-export default function expenses() {
+export default function Expenses() {
   const { open, close, isOpen } = useDialog();
   const { onSubmit, expenses, handleSubmit, addExpense, removeExpense } =
     useExpensesForm({
@@ -46,7 +46,11 @@ export default function expenses() {
       </AppButton>
       <ExpenseDialog isOpen={isOpen} onClose={close} onSave={addExpense} />
       {expenses.length > 0 && (
-        <ExpensesTable expenses={expenses} onDelete={removeExpense} />
+        <ExpensesTable
+          expenses={expenses}
+          onDelete={removeExpense}
+          autoScrollOnChange
+        />
       )}
       <Pagination />
     </Stack>

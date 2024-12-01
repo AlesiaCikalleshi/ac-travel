@@ -8,10 +8,10 @@ import { useBreakpoints } from "@hooks/useBreakpoints";
 import useToast from "@hooks/useToast";
 import { useStorage } from "@services/firebase";
 
-import { PreviewImage, Trip } from "../types";
-import UploadFileButton from "./Files/UploadFileButton";
 import { ACCEPTED_PHOTO_FORMATS } from "../add-trip/components/constants";
+import { PreviewImage, Trip } from "../types";
 import PhotoCard from "./Files/PhotoCard";
+import UploadFileButton from "./Files/UploadFileButton";
 
 interface Props {
   isOpen: boolean;
@@ -21,6 +21,7 @@ interface Props {
   defaultPreviewImageSrc?: string | null;
   // Will be called in case of uploaded file removal
   onChange?: (previewImage: Trip["previewImage"]) => void;
+  tripId: string;
 }
 
 export default function PreviewImageDialog({
@@ -30,6 +31,7 @@ export default function PreviewImageDialog({
   defaultPreviewImage,
   defaultPreviewImageSrc,
   onChange,
+  tripId,
 }: Props) {
   const { md } = useBreakpoints();
   const { showErrorMessage } = useToast();
@@ -75,7 +77,7 @@ export default function PreviewImageDialog({
       !selectedPreviewImage.storagePath &&
       customImageFile
     ) {
-      uploadFiles("preview-images", [
+      uploadFiles(`preview-images/${tripId}`, [
         { fileName: customImageFile.name, file: customImageFile },
       ]);
     } else if (

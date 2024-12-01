@@ -24,6 +24,7 @@ export default function DocumentCard({
   uploadProgress,
   isRemoving,
 }: Props) {
+  
   return (
     <Box
       sx={{
@@ -92,9 +93,9 @@ export default function DocumentCard({
               sx={{
                 overflow: "hidden",
                 display: "-webkit-box",
-                webkitLineClamp: 1,
-                lineClamp: 1,
-                "-webkit-box-orient": "vertical",
+                WebkitLineClamp: '1',
+                LineClamp: '1',
+                WebkitBoxOrient: "vertical",
               }}
             >
               {name}
