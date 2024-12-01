@@ -1,14 +1,14 @@
-import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { Navigate, useLocation } from "react-router-dom";
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
+import { Navigate, useLocation } from 'react-router-dom';
 
-import { Box, Link, Stack, TextField, Typography } from "@mui/material";
+import { Box, Link, Stack, TextField, Typography } from '@mui/material';
 
-import { AppRoutes } from "@config/routes";
-import AppButton from "@features/ui/logo/AppButton";
-import { useAppDispatch, useAppSelector } from "@store/index";
+import { AppRoutes } from '@config/routes';
+import AppButton from '@features/ui/AppButton';
+import { useAppDispatch, useAppSelector } from '@store/index';
 
-import { loginUser } from "../store/authActions";
-import { selectAuth } from "../store/authSlice";
+import { loginUser } from '../store/authActions';
+import { selectAuth } from '../store/authSlice';
 
 interface FormInput {
   email: string;
@@ -16,13 +16,13 @@ interface FormInput {
 }
 
 export default function LoginForm() {
-  const { handleSubmit, control, onSubmit } = useLoginForm();
   const auth = useAppSelector(selectAuth);
+  const { handleSubmit, control, onSubmit } = useLoginForm();
   const location = useLocation();
 
   if (auth.user) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected.
+    // Send them back to the page they tried to visit when they were
+    // redirected to the login page.
     const from = location.state?.from?.pathname || AppRoutes.dashboard;
     return <Navigate to={from} replace />;
   }
@@ -32,12 +32,12 @@ export default function LoginForm() {
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      sx={{ width: "100%" }}
+      sx={{ width: '100%' }}
     >
       <Controller
         name="email"
         control={control}
-        rules={{ required: "Please specify email address!" }}
+        rules={{ required: 'Please specify email address!' }}
         render={({ field, fieldState }) => (
           <TextField
             margin="normal"
@@ -51,7 +51,7 @@ export default function LoginForm() {
             variant="standard"
             helperText={fieldState.error?.message}
             error={Boolean(fieldState.error)}
-            sx={{ mb: { xs: 3, md: 3 }, mt: 0 }}
+            sx={{ mb: 3 }}
             {...field}
           />
         )}
@@ -60,12 +60,13 @@ export default function LoginForm() {
       <Controller
         name="password"
         control={control}
-        rules={{ required: "Please specify your password!" }}
+        rules={{ required: 'Please specify your password!' }}
         render={({ field, fieldState }) => (
           <TextField
             margin="normal"
             required
             fullWidth
+            type="password"
             id="password"
             label="Password"
             autoComplete="current-password"
@@ -73,19 +74,25 @@ export default function LoginForm() {
             variant="standard"
             helperText={fieldState.error?.message}
             error={Boolean(fieldState.error)}
-            sx={{ mb: { xs: 3, md: 5 }, mt: 0 }}
+            sx={{ mb: { xs: 3, md: 5 } }}
             {...field}
           />
         )}
       />
-      <AppButton type="submit" fullWidth variant="contained" sx={{ mb: 2 }}>
+      <AppButton
+        loading={auth.status === 'loading'}
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mb: 2 }}
+      >
         Login
       </AppButton>
       <Stack
         justifyContent="center"
         direction="row"
         spacing={0.5}
-        sx={{ width: "100%" }}
+        sx={{ width: '100%' }}
       >
         <Typography color="text.secondary">
           Dont have an account yet?
@@ -102,8 +109,8 @@ function useLoginForm() {
   const dispatch = useAppDispatch();
   const { control, handleSubmit } = useForm<FormInput>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 

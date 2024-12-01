@@ -1,26 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-import { ButtonBase, Grid } from "@mui/material";
+import { ButtonBase, Grid } from '@mui/material';
 
-import { TRIP_PREVIEW_IMAGES } from "@features/trip/data";
-import AppDialog from "@features/ui/logo/AppDialog";
-import { useBreakpoints } from "@hooks/useBreakpoints";
-import useToast from "@hooks/useToast";
-import { useStorage } from "@services/firebase";
+import { TRIP_PREVIEW_IMAGES } from '@features/trip/data';
+import AppDialog from '@features/ui/AppDialog';
+import { useBreakpoints } from '@hooks/useBreakpoints';
+import useToast from '@hooks/useToast';
+import { useStorage } from '@services/firebase';
 
-import { PreviewImage, Trip } from "../types";
-import UploadFileButton from "./Files/UploadFileButton";
-import { ACCEPTED_PHOTO_FORMATS } from "../add-trip/components/constants";
-import PhotoCard from "./Files/PhotoCard";
+import { ACCEPTED_PHOTO_FORMATS } from '../add-trip/components/constants';
+import { PreviewImage, Trip } from '../types';
+import PhotoCard from './Files/PhotoCard';
+import UploadFileButton from './Files/UploadFileButton';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (previewImage: Trip["previewImage"]) => void;
+  onSave: (previewImage: Trip['previewImage']) => void;
   defaultPreviewImage: PreviewImage | null;
   defaultPreviewImageSrc?: string | null;
   // Will be called in case of uploaded file removal
-  onChange?: (previewImage: Trip["previewImage"]) => void;
+  onChange?: (previewImage: Trip['previewImage']) => void;
 }
 
 export default function PreviewImageDialog({
@@ -55,7 +55,7 @@ export default function PreviewImageDialog({
   >(defaultPreviewImageSrc);
 
   const [selectedPreviewImage, setSelectedPreviewImage] =
-    useState<Trip["previewImage"]>(defaultPreviewImage);
+    useState<Trip['previewImage']>(defaultPreviewImage);
   const onTemplateImageClick = (imageId: string) => {
     if (!isLoading && !removingFilePath) {
       setSelectedPreviewImage({ templateImageId: imageId });
@@ -67,7 +67,7 @@ export default function PreviewImageDialog({
   };
   const onSaveClick = async () => {
     if (!selectedPreviewImage) {
-      showErrorMessage("Please select a preview image!");
+      showErrorMessage('Please select a preview image!');
       return;
     }
     if (
@@ -75,7 +75,7 @@ export default function PreviewImageDialog({
       !selectedPreviewImage.storagePath &&
       customImageFile
     ) {
-      uploadFiles("preview-images", [
+      uploadFiles('preview-images', [
         { fileName: customImageFile.name, file: customImageFile },
       ]);
     } else if (
@@ -152,9 +152,9 @@ export default function PreviewImageDialog({
                 border: 4,
                 borderColor:
                   selectedPreviewImage?.templateImageId === image.id
-                    ? "primary.main"
-                    : "white",
-                overflow: "hidden",
+                    ? 'primary.main'
+                    : 'white',
+                overflow: 'hidden',
               }}
               onClick={() => onTemplateImageClick(image.id)}
             >
@@ -162,7 +162,7 @@ export default function PreviewImageDialog({
                 src={image.src}
                 alt={image.alt}
                 loading="lazy"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               />
             </ButtonBase>
           </Grid>
@@ -183,8 +183,8 @@ export default function PreviewImageDialog({
               enableBorders
               borderColor={
                 selectedPreviewImage?.url || selectedPreviewImage?.storagePath
-                  ? "primary.main"
-                  : "white"
+                  ? 'primary.main'
+                  : 'white'
               }
             />
           ) : (
@@ -192,7 +192,7 @@ export default function PreviewImageDialog({
               <UploadFileButton
                 mainText="Upload preview photo"
                 subText="PNG or PDF (max. 3MB)"
-                sx={{ border: 4, borderColor: "white" }}
+                sx={{ border: 4, borderColor: 'white' }}
                 showSubText={md}
                 onClick={onCustomImageUploadClick}
               />

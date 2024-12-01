@@ -1,24 +1,24 @@
-import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { type SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 
-import AddIcon from "@mui/icons-material/Add";
-import { Stack } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import { Stack } from '@mui/material';
 
-import ExpenseDialog from "@features/trip/components/Expenses/ExpenseDialog";
-import ExpensesTable from "@features/trip/components/Expenses/ExpensesTable";
-import type { Expense, Trip } from "@features/trip/types";
-import AppButton from "@features/ui/logo/AppButton";
-import useDialog from "@hooks/useDialog";
-import { useAppDispatch, useAppSelector } from "@store/index";
+import ExpenseDialog from '@features/trip/components/Expenses/ExpenseDialog';
+import ExpensesTable from '@features/trip/components/Expenses/ExpensesTable';
+import type { Expense, Trip } from '@features/trip/types';
+import AppButton from '@features/ui/AppButton';
+import useDialog from '@hooks/useDialog';
+import { useAppDispatch, useAppSelector } from '@store/index';
 
 import {
   nextStep,
   selectWizardTrip,
   setExpenses,
-} from "../../store/tripWizardSlice";
-import Pagination from "../Navigation/Pagination";
+} from '../../store/tripWizardSlice';
+import Pagination from '../Navigation/Pagination';
 
 interface FormInput {
-  expenses: Trip["expenses"];
+  expenses: Trip['expenses'];
 }
 
 export default function expenses() {
@@ -33,7 +33,7 @@ export default function expenses() {
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      sx={{ width: "100%" }}
+      sx={{ width: '100%' }}
       gap={3}
     >
       <AppButton
@@ -66,10 +66,10 @@ function useExpensesForm({
       expenses: trip.expenses,
     },
   });
-  const expenses = watch("expenses");
+  const expenses = watch('expenses');
   const { append, remove } = useFieldArray({
     control,
-    name: "expenses",
+    name: 'expenses',
   });
 
   const addExpense = (expense: Expense) => {

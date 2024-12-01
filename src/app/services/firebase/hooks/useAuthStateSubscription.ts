@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { logout, userLoaded } from "@features/auth/store/authSlice";
-import { auth } from "@services/firebase";
-import { useAppDispatch } from "@store/index";
+import { logout, userLoaded } from '@features/auth/store/authSlice';
+import { auth } from '@services/firebase';
+import { useAppDispatch } from '@store/index';
 
 export function useAuthStateSubscription() {
   const dispatch = useAppDispatch();
@@ -13,7 +13,7 @@ export function useAuthStateSubscription() {
         dispatch(
           userLoaded({
             displayName: user.displayName,
-            email: user.email ?? "",
+            email: user.email ?? '',
             uid: user.uid,
           }),
         );

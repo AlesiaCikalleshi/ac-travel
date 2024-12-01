@@ -1,13 +1,13 @@
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import MobileStepper from "@mui/material/MobileStepper";
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import MobileStepper from '@mui/material/MobileStepper';
 
-import AppButton from "@features/ui/logo/AppButton";
-import { useBreakpoints } from "@hooks/useBreakpoints";
-import { useAppDispatch, useAppSelector } from "@store/index";
+import AppButton from '@features/ui/AppButton';
+import { useBreakpoints } from '@hooks/useBreakpoints';
+import { useAppDispatch, useAppSelector } from '@store/index';
 
-import { WIZARD_STEPS } from "../../data";
-import { previousStep, selectCurrentStep } from "../../store/tripWizardSlice";
+import { WIZARD_STEPS } from '../../data';
+import { previousStep, selectCurrentStep } from '../../store/tripWizardSlice';
 
 interface Props {
   isLoading?: boolean;
@@ -23,7 +23,7 @@ export default function Pagination({ isLoading }: Props) {
 
   return (
     <MobileStepper
-      variant={lg ? "dots" : "text"}
+      variant={lg ? 'dots' : 'text'}
       steps={maxSteps}
       position="static"
       activeStep={currentStep}
@@ -44,23 +44,23 @@ export default function Pagination({ isLoading }: Props) {
           variant="outlined"
           startIcon={<KeyboardArrowLeft />}
           sx={{
-            visibility: currentStep === 0 ? "hidden" : "visible",
+            visibility: currentStep === 0 ? 'hidden' : 'visible',
           }}
         >
           Back
         </AppButton>
       }
       sx={{
-        ".MuiMobileStepper-dots": {
-          visibility: "hidden",
+        '.MuiMobileStepper-dots': {
+          visibility: 'hidden',
         },
-        display: "flex",
+        display: 'flex',
         gap: 2,
-        whiteSpace: "nowrap",
-        position: "absolute",
+        whiteSpace: 'nowrap',
+        position: 'absolute',
         bottom: 0,
         left: 0,
-        width: "100%",
+        width: '100%',
         borderRadius: 4,
         p: { xs: 2, md: 3 },
       }}

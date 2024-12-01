@@ -1,18 +1,18 @@
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
-import { Box, FormHelperText, Grid, Stack, TextField } from "@mui/material";
+import { Box, FormHelperText, Grid, Stack, TextField } from '@mui/material';
 
 import {
   EXPENSES_CATEGORIES,
   EXPENSE_ICON_BY_CATEGORY,
-} from "@features/trip/data";
-import { removeTrailingZeros } from "@features/trip/utils/removeTrailingZeros";
-import AppDialog from "@features/ui/logo/AppDialog";
-import { useBreakpoints } from "@hooks/useBreakpoints";
+} from '@features/trip/data';
+import { removeTrailingZeros } from '@features/trip/utils/removeTrailingZeros';
+import AppDialog from '@features/ui/AppDialog';
+import { useBreakpoints } from '@hooks/useBreakpoints';
 
-import type { Expense } from "../../types";
-import ExpenseCategoryIcon from "./ExpenseCategoryIcon";
+import type { Expense } from '../../types';
+import ExpenseCategoryIcon from './ExpenseCategoryIcon';
 
 interface Props {
   isOpen: boolean;
@@ -21,9 +21,9 @@ interface Props {
 }
 
 interface FormInput {
-  category: Expense["category"];
-  amount: Expense["amount"];
-  description: Expense["description"];
+  category: Expense['category'];
+  amount: Expense['amount'];
+  description: Expense['description'];
 }
 
 export default function (props: Props) {
@@ -49,11 +49,11 @@ export default function (props: Props) {
       isForm
       maxWidth={684}
     >
-      <Stack sx={{ width: "100%" }} gap={4}>
+      <Stack sx={{ width: '100%' }} gap={4}>
         <Box>
           <Grid
             container={!md}
-            display={{ xs: "grid", md: "flex" }}
+            display={{ xs: 'grid', md: 'flex' }}
             gridTemplateColumns="repeat(3, 75px)"
             columnGap={{ xs: 5, sm: 20, md: 0 }}
             justifyContent="space-between"
@@ -77,7 +77,7 @@ export default function (props: Props) {
                     color={iconInfo.color}
                     backgroundColor={iconInfo.backgroundColor}
                     borderColor={
-                      category === selectedCategory ? iconInfo.color : "white"
+                      category === selectedCategory ? iconInfo.color : 'white'
                     }
                   >
                     {<iconInfo.icon fontSize="large" />}
@@ -87,8 +87,8 @@ export default function (props: Props) {
             })}
             <input
               type="hidden"
-              {...register("category", {
-                required: "Please select a category!",
+              {...register('category', {
+                required: 'Please select a category!',
               })}
             />
           </Grid>
@@ -101,10 +101,10 @@ export default function (props: Props) {
             name="amount"
             control={control}
             rules={{
-              required: "Please specify your amount!",
+              required: 'Please specify your amount!',
               validate: {
                 positiveNumber: (value) =>
-                  value > 0 ? undefined : "Amount should be grater than zero!",
+                  value > 0 ? undefined : 'Amount should be grater than zero!',
               },
             }}
             render={({ field: { ref, ...field }, fieldState }) => (
@@ -168,11 +168,11 @@ function useExpenseForm({ onSave, onClose }: Props) {
   } = useForm<FormInput>({
     defaultValues: {
       amount: 0,
-      description: "",
+      description: '',
     },
   });
 
-  const selectedCategory = watch("category");
+  const selectedCategory = watch('category');
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
     onSave({ id: uuidv4(), ...data });
@@ -180,14 +180,14 @@ function useExpenseForm({ onSave, onClose }: Props) {
   };
 
   const onReset = () => {
-    resetField("category");
+    resetField('category');
     reset();
     onClose();
   };
 
-  const onCategoryClick = (category: Expense["category"]) => {
-    setValue("category", category);
-    trigger("category");
+  const onCategoryClick = (category: Expense['category']) => {
+    setValue('category', category);
+    trigger('category');
   };
 
   return {

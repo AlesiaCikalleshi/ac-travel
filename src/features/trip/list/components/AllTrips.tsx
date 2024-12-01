@@ -1,12 +1,12 @@
-import AddIcon from "@mui/icons-material/Add";
-import { Box, CircularProgress, Link, Stack, Typography } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import { Box, CircularProgress, Link, Stack, Typography } from '@mui/material';
 
-import { AppRoutes } from "@config/routes";
-import { useGetTripsQuery } from "@features/trip/store/tripApi";
-import AppButton from "@features/ui/logo/AppButton";
+import { AppRoutes } from '@config/routes';
+import { useGetTripsQuery } from '@features/trip/store/tripApi';
+import AppButton from '@features/ui/AppButton';
 
-import NoTrips from "./NoTrips";
-import TripsList from "./TripList";
+import NoTrips from './NoTrips';
+import TripsList from './TripList';
 
 export default function AllTrips() {
   const {
@@ -39,7 +39,7 @@ export default function AllTrips() {
             LinkComponent={Link}
             href={AppRoutes.addTrip}
             endIcon={<AddIcon />}
-            sx={{ mt: 2, display: { xs: "none", md: "flex" } }}
+            sx={{ mt: 2, display: { xs: 'none', md: 'flex' } }}
           >
             Go Travel
           </AppButton>
@@ -52,9 +52,9 @@ export default function AllTrips() {
   } else if (isSuccess && trips.length === 0) {
     return (
       <Stack
-        justifyContent={{ xs: "flex-start", md: "center" }}
+        justifyContent={{ xs: 'flex-start', md: 'center' }}
         alignItems="center"
-        sx={{ width: "100%", height: { xs: "auto", md: "100%" } }}
+        sx={{ width: '100%', height: { xs: 'auto', md: '100%' } }}
       >
         <NoTrips />
       </Stack>

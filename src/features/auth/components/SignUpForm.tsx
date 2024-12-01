@@ -1,15 +1,15 @@
-import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { Navigate } from "react-router-dom";
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
+import { Navigate } from 'react-router-dom';
 
-import { Box, Link, Stack, TextField, Typography } from "@mui/material";
+import { Box, Link, Stack, TextField, Typography } from '@mui/material';
 
-import { AppRoutes } from "@config/routes";
-import AppButton from "@features/ui/logo/AppButton";
-import { auth } from "@services/firebase";
-import { useAppDispatch, useAppSelector } from "@store/index";
+import { AppRoutes } from '@config/routes';
+import AppButton from '@features/ui/AppButton';
+import { auth } from '@services/firebase';
+import { useAppDispatch, useAppSelector } from '@store/index';
 
-import { registerUser } from "../store/authActions";
-import { selectAuth, setUserName } from "../store/authSlice";
+import { registerUser } from '../store/authActions';
+import { selectAuth, setUserName } from '../store/authSlice';
 
 interface FormInput {
   name: string;
@@ -31,12 +31,12 @@ export default function SignUpForm() {
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      sx={{ width: "100%" }}
+      sx={{ width: '100%' }}
     >
       <Controller
         name="name"
         control={control}
-        rules={{ required: "Please specify your name!" }}
+        rules={{ required: 'Please specify your name!' }}
         render={({ field, fieldState }) => (
           <TextField
             margin="normal"
@@ -59,7 +59,7 @@ export default function SignUpForm() {
       <Controller
         name="email"
         control={control}
-        rules={{ required: "Please specify email address!" }}
+        rules={{ required: 'Please specify email address!' }}
         render={({ field, fieldState }) => (
           <TextField
             margin="normal"
@@ -81,7 +81,7 @@ export default function SignUpForm() {
       <Controller
         name="password"
         control={control}
-        rules={{ required: "Please specify your password!" }}
+        rules={{ required: 'Please specify your password!' }}
         render={({ field, fieldState }) => (
           <TextField
             margin="normal"
@@ -105,7 +105,7 @@ export default function SignUpForm() {
         name="passwordRepeat"
         control={control}
         rules={{
-          required: "Please specify your password confirmation!",
+          required: 'Please specify your password confirmation!',
           validate: (confirmPassword) =>
             confirmPassword !== password
               ? "Passwords doesn't match!"
@@ -129,7 +129,7 @@ export default function SignUpForm() {
         )}
       />
       <AppButton
-        loading={auth.status === "loading"}
+        loading={auth.status === 'loading'}
         type="submit"
         fullWidth
         variant="contained"
@@ -141,7 +141,7 @@ export default function SignUpForm() {
         justifyContent="center"
         direction="row"
         spacing={0.5}
-        sx={{ width: "100%" }}
+        sx={{ width: '100%' }}
       >
         <Typography color="text.secondary">
           Do you have an account already?
@@ -159,13 +159,13 @@ function useSignUpForm() {
 
   const { control, handleSubmit, watch } = useForm<FormInput>({
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      passwordRepeat: "",
+      name: '',
+      email: '',
+      password: '',
+      passwordRepeat: '',
     },
   });
-  const password = watch("password");
+  const password = watch('password');
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
     await dispatch(

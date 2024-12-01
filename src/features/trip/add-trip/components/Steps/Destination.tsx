@@ -3,30 +3,30 @@ import {
   type SubmitHandler,
   useFieldArray,
   useForm,
-} from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
+} from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Stack, TextField } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Stack, TextField } from '@mui/material';
 
-import { Trip } from "@features/trip/types";
-import AppButton from "@features/ui/logo/AppButton";
-import AppIconButton from "@features/ui/logo/AppIconButton";
-import { useAppDispatch, useAppSelector } from "@store/index";
+import { Trip } from '@features/trip/types';
+import AppButton from '@features/ui/AppButton';
+import AppIconButton from '@features/ui/AppIconButton';
+import { useAppDispatch, useAppSelector } from '@store/index';
 
 import {
   nextStep,
   selectWizardTrip,
   setDestinations,
   setLocationFrom,
-} from "../../store/tripWizardSlice";
-import Pagination from "../Navigation/Pagination";
-import { MAX_TRIP_DESTINATION } from "../constants";
+} from '../../store/tripWizardSlice';
+import Pagination from '../Navigation/Pagination';
+import { MAX_TRIP_DESTINATION } from '../constants';
 
 interface FormInput {
-  locationFrom: Trip["locationFrom"];
-  destinations: Trip["destinations"];
+  locationFrom: Trip['locationFrom'];
+  destinations: Trip['destinations'];
 }
 
 export default function Destination() {
@@ -44,14 +44,14 @@ export default function Destination() {
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      sx={{ width: "100%" }}
+      sx={{ width: '100%' }}
       gap={2}
     >
       <Stack gap={3}>
         <Controller
           name="locationFrom"
           control={control}
-          rules={{ required: "Please specify your location!" }}
+          rules={{ required: 'Please specify your location!' }}
           render={({ field: { ref, ...field }, fieldState }) => (
             <TextField
               inputRef={ref}
@@ -135,11 +135,11 @@ function useDestinationsForm() {
     remove,
   } = useFieldArray({
     control,
-    name: "destinations",
+    name: 'destinations',
   });
 
   const addDestination = () => {
-    append({ id: uuidv4(), name: "" });
+    append({ id: uuidv4(), name: '' });
   };
 
   const removeDestination = (index: number) => {

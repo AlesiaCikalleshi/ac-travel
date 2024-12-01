@@ -1,22 +1,22 @@
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Breadcrumbs,
   CircularProgress,
   Link,
   Stack,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
-import { AppRoutes } from "@config/routes";
-import { Colors } from "@config/styles";
-import AppButton from "@features/ui/logo/AppButton";
+import { AppRoutes } from '@config/routes';
+import { Colors } from '@config/styles';
+import AppButton from '@features/ui/AppButton';
 
-import { useGetTripQuery, useUpdateTripMutation } from "../store/tripApi";
-import type { Trip } from "../types";
-import Hero from "./Hero";
-import TripTabs from "./Tabs/TripTabs";
+import { useGetTripQuery, useUpdateTripMutation } from '../store/tripApi';
+import type { Trip } from '../types';
+import Hero from './Hero';
+import TripTabs from './Tabs/TripTabs';
 
 export default function TripDetails() {
   const { tripId } = useParams();

@@ -1,12 +1,12 @@
-import FlightIcon from "@mui/icons-material/Flight";
-import HomeIcon from "@mui/icons-material/Home";
-import type { SvgIconTypeMap } from "@mui/material";
-import type { OverridableComponent } from "@mui/material/OverridableComponent";
+import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
+import HomeIcon from '@mui/icons-material/Home';
+import type { SvgIconTypeMap } from '@mui/material';
+import type { OverridableComponent } from '@mui/material/OverridableComponent';
 
-import { AppRoutes } from "@config/routes/AppRoutes";
+import { AppRoutes } from '@config/routes/AppRoutes';
 
 interface AccountLinks {
-  Icon: OverridableComponent<SvgIconTypeMap<object, "svg">>;
+  Icon: OverridableComponent<SvgIconTypeMap<object, 'svg'>>;
   text: string;
   path: string;
 }
@@ -14,12 +14,12 @@ interface AccountLinks {
 export const ACCOUNT_LINKS: AccountLinks[] = [
   {
     Icon: HomeIcon,
-    text: "Home",
+    text: 'Home',
     path: AppRoutes.dashboard,
   },
   {
-    Icon: FlightIcon,
-    text: "Trips",
+    Icon: AirplanemodeActiveIcon,
+    text: 'Trips',
     path: AppRoutes.trips,
   },
 ];

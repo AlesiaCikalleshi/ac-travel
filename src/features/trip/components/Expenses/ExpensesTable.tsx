@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   Stack,
@@ -11,17 +11,17 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
-import { Trip } from "@features/trip/types";
-import AppIconButton from "@features/ui/logo/AppIconButton";
-import { useBreakpoints } from "@hooks/useBreakpoints";
+import { EXPENSE_ICON_BY_CATEGORY } from '@features/trip/data';
+import { Trip } from '@features/trip/types';
+import AppIconButton from '@features/ui/AppIconButton';
+import { useBreakpoints } from '@hooks/useBreakpoints';
 
-import ExpenseCategoryIcon from "./ExpenseCategoryIcon";
-import { EXPENSE_ICON_BY_CATEGORY } from "@features/trip/data";
+import ExpenseCategoryIcon from './ExpenseCategoryIcon';
 
 interface Props {
-  expenses: Trip["expenses"];
+  expenses: Trip['expenses'];
   onDelete: (expenseId: string) => void;
 }
 
@@ -31,7 +31,7 @@ export default function ExpensesTable({ expenses, onDelete }: Props) {
 
   useEffect(() => {
     if (bottomBoxRef.current) {
-      bottomBoxRef.current.scrollIntoView({ behavior: "smooth" });
+      bottomBoxRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [expenses]);
 
@@ -40,7 +40,7 @@ export default function ExpensesTable({ expenses, onDelete }: Props) {
       <Table aria-label="Expenses table">
         <TableHead>
           <TableRow>
-            <TableCell sx={{ width: { xs: "30%", md: "25%" } }}>
+            <TableCell sx={{ width: { xs: '30%', md: '25%' } }}>
               <Typography component="span" variant="subtitle2">
                 Category
               </Typography>
@@ -71,7 +71,7 @@ export default function ExpensesTable({ expenses, onDelete }: Props) {
             return (
               <TableRow
                 key={expense.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell>
                   <Stack
@@ -100,7 +100,7 @@ export default function ExpensesTable({ expenses, onDelete }: Props) {
                     <Typography
                       component="span"
                       variant="subtitle1"
-                      sx={{ wordWrap: "break-word" }}
+                      sx={{ wordWrap: 'break-word' }}
                     >
                       {expense.description}
                     </Typography>

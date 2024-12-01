@@ -1,8 +1,8 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from 'react-router-dom';
 
-import { selectAuth } from "@features/auth/store/authSlice";
-import { useAppSelector } from "@store/index";
-import Loader from "@features/ui/logo/Loader";
+import { selectAuth } from '@features/auth/store/authSlice';
+import Loader from '@features/ui/Loader';
+import { useAppSelector } from '@store/index';
 
 interface Props {
   children: JSX.Element;

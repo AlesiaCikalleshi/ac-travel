@@ -1,12 +1,12 @@
-import { deleteObject, ref, uploadBytesResumable } from "firebase/storage";
-import { useEffect, useState } from "react";
+import { deleteObject, ref, uploadBytesResumable } from 'firebase/storage';
+import { useEffect, useState } from 'react';
 
-import { selectUser } from "@features/auth/store/authSlice";
-import { DocumentToUpload, TripFile } from "@features/trip/types";
-import useToast from "@hooks/useToast";
-import { useAppSelector } from "@store/index";
+import { selectUser } from '@features/auth/store/authSlice';
+import { DocumentToUpload, TripFile } from '@features/trip/types';
+import useToast from '@hooks/useToast';
+import { useAppSelector } from '@store/index';
 
-import { storage } from "../firebase";
+import { storage } from '../firebase';
 
 interface Props {
   onAllUploadSuccess: (uploadedFiles: TripFile[]) => void;
@@ -101,7 +101,7 @@ export function useStorage({ onAllUploadSuccess, onOneUploadSuccess }: Props) {
       const uploadTask = uploadBytesResumable(storageRef, file.file);
 
       uploadTask.on(
-        "state_changed",
+        'state_changed',
         (snapshot) => {
           const newProgress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -161,7 +161,7 @@ export function useStorage({ onAllUploadSuccess, onOneUploadSuccess }: Props) {
       return true;
     } catch (error) {
       showErrorMessage(
-        "Failed to remove file. Please try again later or contact support!",
+        'Failed to remove file. Please try again later or contact support!',
       );
     } finally {
       setState((prev) => ({ ...prev, removingFilePath: null }));

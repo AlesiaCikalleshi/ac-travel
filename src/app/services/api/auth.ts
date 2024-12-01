@@ -1,13 +1,12 @@
-import { FirebaseError } from "firebase/app";
+import { FirebaseError } from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
-} from "firebase/auth";
+} from 'firebase/auth';
 
-import { auth } from "@services/firebase";
-import { mapAuthCodeToMessage } from "@services/firebase/helpers/mapAuthCodeToMessage";
+import { auth, mapAuthCodeToMessage } from '@services/firebase';
 
 export function register(name: string, email: string, password: string) {
   return handleAuthError(async () => {
@@ -15,7 +14,7 @@ export function register(name: string, email: string, password: string) {
     if (auth.currentUser) {
       await updateProfile(auth.currentUser, { displayName: name });
     } else {
-      throw Error("Something went wrong!");
+      throw Error('Something went wrong! Please try again!');
     }
   });
 }
@@ -26,10 +25,6 @@ export function login(email: string, password: string) {
   });
 }
 
-export function logout() {
-  return signOut(auth);
-}
-
 async function handleAuthError(authFunction: () => Promise<void>) {
   try {
     await authFunction();
@@ -37,6 +32,10 @@ async function handleAuthError(authFunction: () => Promise<void>) {
     if (error instanceof FirebaseError) {
       throw Error(mapAuthCodeToMessage(error.code));
     }
-    throw Error("Something went wrong! Please try again!");
+    throw Error('Something went wrong! Please try again!');
   }
+}
+
+export function logout() {
+  return signOut(auth);
 }
