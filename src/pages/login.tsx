@@ -1,7 +1,7 @@
-import { Typography } from "@mui/material";
+import { Typography } from '@mui/material';
 
-import { APP_NAME } from "@config/constants";
-import LoginForm from "@features/auth/components/LoginForm";
+import { APP_NAME } from '@config/constants';
+import LoginForm from '@features/auth/components/LoginForm';
 
 export default function LoginPage() {
   return (
