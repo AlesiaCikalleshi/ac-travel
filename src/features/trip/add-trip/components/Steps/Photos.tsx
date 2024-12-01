@@ -16,8 +16,6 @@ import Pagination from '../Navigation/Pagination';
 export default function Photos() {
   const { photos, onSubmit, onFileStorageRemoval, isLoading, tripId } =
     usePhotosForm();
-  const { photos, onSubmit, onFileStorageRemoval, isLoading, tripId } =
-    usePhotosForm();
 
   return (
     <FilesForm
@@ -26,9 +24,7 @@ export default function Photos() {
       onSubmit={onSubmit}
       SubmitComponent={<Pagination isLoading={isLoading} />}
       onFileStorageRemoval={onFileStorageRemoval}
-      onFileStorageRemoval={onFileStorageRemoval}
       type="photo"
-      tripId={tripId}
     />
   );
 }
@@ -52,7 +48,6 @@ function usePhotosForm() {
   };
 
   const onFileStorageRemoval = (data: TripFile[]) => {
-  const onFileStorageRemoval = (data: TripFile[]) => {
     dispatch(setPhotos(data));
   };
 
@@ -62,7 +57,5 @@ function usePhotosForm() {
     onFileStorageRemoval,
     tripId: trip.id,
     isLoading,
-    onFileStorageRemoval,
-    tripId: trip.id,
   };
 }

@@ -1,20 +1,16 @@
+import debounce from 'lodash.debounce';
 import { useCallback, useEffect } from 'react';
-import { Controller, UseFormWatch, useForm } from 'react-hook-form';
+import { Controller, type UseFormWatch, useForm } from 'react-hook-form';
 
 import PaidIcon from '@mui/icons-material/Paid';
-import {
-  InputLabel,
-  Stack,
-  TextField,
-  Typography,
-  debounce,
-} from '@mui/material';
+import { InputLabel, Stack, TextField, Typography } from '@mui/material';
 
 import { Colors } from '@config/styles';
 import PlacesForm from '@features/trip/components/PlacesForm';
+import DateSelectInput from '@features/ui/form/DateSelectInput';
 
-import DateSelectInput from '../../../ui/form/DateSelectInput';
-import type { Trip } from '../../types';
+import type { Trip } from '../../../types';
+import { getTripTotalBudget } from '../../../utils/getTripTotalBudget';
 import ContentCard from './ContentCard';
 
 interface Props {
@@ -30,7 +26,7 @@ interface FormInput {
 }
 
 export default function TripInfoAndPlaces(props: Props) {
-  const totalBudget = 360;
+  const totalBudget = getTripTotalBudget(props.trip.expenses);
   const { control, formValues } = useTravelInfoForm(props);
 
   const onPlacesUpdate = (newPlaces: Trip['places']) =>
@@ -68,7 +64,19 @@ export default function TripInfoAndPlaces(props: Props) {
                   control={control}
                   requiredErrorText="Please specify start date!"
                   maxDate={formValues.endDate}
-                  sx={{ svg: { color: Colors.secondaryBlue }, maxWidth: 150 }}
+                  validate={{
+                    startDate: (startDate) =>
+                      !startDate ||
+                      (startDate &&
+                        formValues.endDate &&
+                        startDate < formValues.endDate)
+                        ? undefined
+                        : 'Start date should be before end date!',
+                  }}
+                  sx={{
+                    svg: { color: Colors.secondaryBlue },
+                    maxWidth: { md: 150 },
+                  }}
                 />
                 <DateSelectInput
                   label="End Date"
@@ -76,11 +84,27 @@ export default function TripInfoAndPlaces(props: Props) {
                   control={control}
                   requiredErrorText="Please specify end date!"
                   minDate={formValues.startDate}
-                  sx={{ svg: { color: Colors.secondaryBlue }, maxWidth: 150 }}
+                  validate={{
+                    endDate: (endDate) =>
+                      !endDate ||
+                      (endDate &&
+                        formValues.startDate &&
+                        formValues.startDate < endDate)
+                        ? undefined
+                        : 'End date should be after start date!',
+                  }}
+                  sx={{
+                    svg: { color: Colors.secondaryBlue },
+                    maxWidth: { md: 150 },
+                  }}
                 />
-                <Stack gap={0.5}>
+                <Stack gap={0.5} sx={{ display: { xs: 'none', md: 'flex' } }}>
                   <InputLabel
-                    sx={{ fontSize: '0.875rem', lineHeight: '1.313rem' }}
+                    sx={{
+                      fontSize: '0.68rem',
+
+                      lineHeight: '0.985rem',
+                    }}
                   >
                     Budget
                   </InputLabel>
@@ -107,7 +131,7 @@ export default function TripInfoAndPlaces(props: Props) {
                 maxRows={6}
                 inputProps={{ maxLength: 200 }}
                 helperText={
-                  fieldState.error?.message ?? `${field.value?.length}/200`
+                  fieldState.error?.message ?? `${field.value.length}/200`
                 }
                 error={Boolean(fieldState.error)}
                 {...field}
@@ -158,7 +182,12 @@ function useWatchChange(
   );
   useEffect(() => {
     const formUpdateSubscription = watch((newValues) => {
-      if (newValues.name && newValues.startDate && newValues.endDate) {
+      if (
+        newValues.name &&
+        newValues.startDate &&
+        newValues.endDate &&
+        newValues.startDate < newValues.endDate
+      ) {
         onUpdateDebounced(newValues);
       }
     });

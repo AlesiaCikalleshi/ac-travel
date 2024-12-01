@@ -1,7 +1,7 @@
-import { Stack } from "@mui/material";
+import { Stack } from '@mui/material';
 
-import type { Trip } from "../../types";
-import TripCard from "./TripCard";
+import type { Trip } from '../../types';
+import TripCard from './TripCard';
 
 interface Props {
   trips: Trip[];

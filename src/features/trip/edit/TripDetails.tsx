@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
@@ -12,13 +12,23 @@ import {
 import { AppRoutes } from '@config/routes';
 import { Colors } from '@config/styles';
 import AppButton from '@features/ui/AppButton';
+import AppDialog from '@features/ui/AppDialog';
+import useDialog from '@hooks/useDialog';
+import useToast from '@hooks/useToast';
 
-import { useGetTripQuery, useUpdateTripMutation } from '../store/tripsApi';
+import {
+  useDeleteTripMutation,
+  useGetTripQuery,
+  useUpdateTripMutation,
+} from '../store/tripsApi';
 import type { Trip } from '../types';
 import Hero from './components/Hero/Hero';
 import TripTabs from './components/Tabs/TripTabs';
 
 export default function TripDetails() {
+  const navigate = useNavigate();
+  const { showSuccessMessage } = useToast();
+  const { isOpen, open, close } = useDialog();
   const { tripId } = useParams();
   const {
     data: trip,
@@ -28,6 +38,15 @@ export default function TripDetails() {
     error,
   } = useGetTripQuery(tripId);
   const [updateTrip] = useUpdateTripMutation();
+  const [deleteTrip] = useDeleteTripMutation();
+
+  const onDeleteTrip = async () => {
+    close();
+    navigate(AppRoutes.trips);
+    await deleteTrip(tripId!);
+    showSuccessMessage('Trip was successfully deleted!');
+  };
+
   const onTripUpdate = (data: Partial<Trip>) => {
     updateTrip({ id: trip!.id, data });
   };
@@ -42,8 +61,8 @@ export default function TripDetails() {
     return (
       <Stack>
         <Stack
-          justifyContent="space-between"
           alignItems="center"
+          justifyContent="space-between"
           direction="row"
         >
           <Breadcrumbs aria-label="breadcrumb">
@@ -54,20 +73,34 @@ export default function TripDetails() {
               {trip.name}
             </Typography>
           </Breadcrumbs>
-
-          <AppButton endIcon={<DeleteIcon />} isSmall color="error">
+          <AppButton
+            endIcon={<DeleteIcon />}
+            isSmall
+            color="error"
+            onClick={open}
+          >
             Delete
           </AppButton>
         </Stack>
-
-        <Hero trip={trip} onUpdate={function (data: Partial<Trip>): void {
-          throw new Error('Function not implemented.');
-        } } />
+        <Hero trip={trip} onUpdate={onTripUpdate} />
         <TripTabs trip={trip} onUpdate={onTripUpdate} />
+        <AppDialog
+          title="Are you sure that you want to delete this trip?"
+          primaryButtonText="Yes"
+          secondaryButtonText="No"
+          isOpen={isOpen}
+          onClose={close}
+          onSecondaryButtonClick={close}
+          onPrimaryButtonClick={onDeleteTrip}
+          maxWidth={460}
+          disableBottomTitlePadding
+          hideCloseButton
+        />
       </Stack>
     );
   } else if (isError) {
     throw error;
   }
+
   return null;
 }

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { getDownloadURL } from "@services/firebase";
+import { getDownloadURL } from '@services/firebase';
 
-import { TRIP_PREVIEW_IMAGES } from "../data";
-import type { PreviewImage } from "../types";
+import { TRIP_PREVIEW_IMAGES } from '../data';
+import type { PreviewImage } from '../types';
 
-export default function usePreviewImageSrc(previewImage?: PreviewImage | null) {
+export function usePreviewImageSrc(previewImage?: PreviewImage | null) {
   const [previewImageSrc, setPreviewImgSrc] = useState<string | null>();
   useEffect(() => {
     const fetchPreviewImage = async () => {
@@ -18,14 +18,16 @@ export default function usePreviewImageSrc(previewImage?: PreviewImage | null) {
 }
 async function getPreviewImageSrc(previewImage?: PreviewImage | null) {
   let previewImageSrc = null;
-  if (previewImage?.templateImageId) {
+  if (previewImage?.url) {
+    previewImageSrc = previewImage?.url;
+  } else if (previewImage?.templateImageId) {
     previewImageSrc = previewImage?.templateImageId
       ? TRIP_PREVIEW_IMAGES.find(
           (image) => image.id === previewImage?.templateImageId,
         )?.src
       : null;
   } else if (previewImage?.storagePath) {
-    previewImageSrc = getDownloadURL(previewImage.storagePath);
+    previewImageSrc = await getDownloadURL(previewImage.storagePath);
   }
   return previewImageSrc;
 }

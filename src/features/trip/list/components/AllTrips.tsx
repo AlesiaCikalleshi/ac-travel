@@ -2,11 +2,11 @@ import AddIcon from '@mui/icons-material/Add';
 import { Box, CircularProgress, Link, Stack, Typography } from '@mui/material';
 
 import { AppRoutes } from '@config/routes';
-import { useGetTripsQuery } from '@features/trip/store/tripsApi';
 import AppButton from '@features/ui/AppButton';
 
+import { useGetTripsQuery } from '../../store/tripsApi';
 import NoTrips from './NoTrips';
-import TripsList from './TripList';
+import TripsList from './TripsList';
 
 export default function AllTrips() {
   const {
@@ -39,14 +39,12 @@ export default function AllTrips() {
             LinkComponent={Link}
             href={AppRoutes.addTrip}
             endIcon={<AddIcon />}
-            sx={{ mt: 2, display: { xs: 'none', md: 'flex' } }}
+            sx={{ display: { xs: 'none', md: 'flex' } }}
           >
             Go Travel
           </AppButton>
         </Stack>
-        <Stack direction="row" gap={2} flexWrap="wrap">
-          <TripsList trips={trips} />
-        </Stack>
+        <TripsList trips={trips} />
       </Box>
     );
   } else if (isSuccess && trips.length === 0) {

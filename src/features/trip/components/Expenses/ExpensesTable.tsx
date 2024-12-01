@@ -24,14 +24,8 @@ interface Props {
   expenses: Trip['expenses'];
   onDelete: (expenseId: string) => void;
   autoScrollOnChange?: boolean;
-  autoScrollOnChange?: boolean;
 }
 
-export default function ExpensesTable({
-  expenses,
-  onDelete,
-  autoScrollOnChange,
-}: Props) {
 export default function ExpensesTable({
   expenses,
   onDelete,
@@ -44,7 +38,6 @@ export default function ExpensesTable({
     if (bottomBoxRef.current && autoScrollOnChange) {
       bottomBoxRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [expenses, autoScrollOnChange]);
   }, [expenses, autoScrollOnChange]);
 
   return (
