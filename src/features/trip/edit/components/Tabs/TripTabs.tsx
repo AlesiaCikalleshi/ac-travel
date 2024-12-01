@@ -54,6 +54,7 @@ export default function TripTabs({ trip, onUpdate }: Props) {
     setSelectedTab(newValue);
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set('selectedTab', newValue.toString());
+
     setSearchParams(newSearchParams);
   };
 
