@@ -1,11 +1,11 @@
-import { PURGE } from "redux-persist";
-import { v4 as uuidv4 } from "uuid";
+import { PURGE } from 'redux-persist';
+import { v4 as uuidv4 } from 'uuid';
 
-import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { type RootState } from "@store/index";
+import { type RootState } from '@store/index';
 
-import type { Trip } from "../../types";
+import type { Trip } from '../../types';
 
 interface TripWizardState {
   trip: Trip;
@@ -16,14 +16,14 @@ const getInitialState = () => ({
   currentStep: 0,
   trip: {
     id: uuidv4(),
-    name: "",
+    name: '',
     previewImage: null,
-    description: "",
+    description: '',
     startDate: null,
     endDate: null,
-    locationFrom: "",
-    destinations: [{ id: uuidv4(), name: "" }],
-    places: [{ id: uuidv4(), name: "", isChecked: false }],
+    locationFrom: '',
+    destinations: [{ id: uuidv4(), name: '' }],
+    places: [{ id: uuidv4(), name: '', isChecked: false }],
     expenses: [],
     documents: [],
     packingLists: [],
@@ -34,7 +34,7 @@ const getInitialState = () => ({
 const initialState: TripWizardState = getInitialState();
 
 export const tripWizardSlice = createSlice({
-  name: "tripWizard",
+  name: 'tripWizard',
   initialState,
   reducers: {
     nextStep: (state) => {
@@ -53,7 +53,7 @@ export const tripWizardSlice = createSlice({
       action: PayloadAction<
         Pick<
           Trip,
-          "startDate" | "endDate" | "name" | "previewImage" | "description"
+          'startDate' | 'endDate' | 'name' | 'previewImage' | 'description'
         >
       >,
     ) => {
@@ -63,28 +63,28 @@ export const tripWizardSlice = createSlice({
       state.trip.endDate = action.payload.endDate;
       state.trip.previewImage = action.payload.previewImage;
     },
-    setPreviewImage: (state, action: PayloadAction<Trip["previewImage"]>) => {
+    setPreviewImage: (state, action: PayloadAction<Trip['previewImage']>) => {
       state.trip.previewImage = action.payload;
     },
-    setLocationFrom: (state, action: PayloadAction<Trip["locationFrom"]>) => {
+    setLocationFrom: (state, action: PayloadAction<Trip['locationFrom']>) => {
       state.trip.locationFrom = action.payload;
     },
-    setDestinations: (state, action: PayloadAction<Trip["destinations"]>) => {
+    setDestinations: (state, action: PayloadAction<Trip['destinations']>) => {
       state.trip.destinations = action.payload;
     },
-    setPlaces: (state, action: PayloadAction<Trip["places"]>) => {
+    setPlaces: (state, action: PayloadAction<Trip['places']>) => {
       state.trip.places = action.payload;
     },
-    setExpenses: (state, action: PayloadAction<Trip["expenses"]>) => {
+    setExpenses: (state, action: PayloadAction<Trip['expenses']>) => {
       state.trip.expenses = action.payload;
     },
-    setDocuments: (state, action: PayloadAction<Trip["documents"]>) => {
+    setDocuments: (state, action: PayloadAction<Trip['documents']>) => {
       state.trip.documents = action.payload;
     },
-    setPackingLists: (state, action: PayloadAction<Trip["packingLists"]>) => {
+    setPackingLists: (state, action: PayloadAction<Trip['packingLists']>) => {
       state.trip.packingLists = action.payload;
     },
-    setPhotos: (state, action: PayloadAction<Trip["photos"]>) => {
+    setPhotos: (state, action: PayloadAction<Trip['photos']>) => {
       state.trip.photos = action.payload;
     },
     resetWizard: (state) => {

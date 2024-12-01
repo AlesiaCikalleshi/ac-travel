@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   Stack,
@@ -11,21 +11,27 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
-import { EXPENSE_ICON_BY_CATEGORY } from "@features/trip/data";
-import { Trip } from "@features/trip/types";
-import AppIconButton from "@features/ui/logo/AppIconButton";
-import { useBreakpoints } from "@hooks/useBreakpoints";
+import AppIconButton from '@features/ui/AppIconButton';
+import { useBreakpoints } from '@hooks/useBreakpoints';
 
-import ExpenseCategoryIcon from "./ExpenseCategoryIcon";
+import { EXPENSE_ICON_BY_CATEGORY } from '../../data';
+import type { Trip } from '../../types';
+import ExpenseCategoryIcon from './ExpenseCategoryIcon';
 
 interface Props {
-  expenses: Trip["expenses"];
+  expenses: Trip['expenses'];
   onDelete: (expenseId: string) => void;
+  autoScrollOnChange?: boolean;
   autoScrollOnChange?: boolean;
 }
 
+export default function ExpensesTable({
+  expenses,
+  onDelete,
+  autoScrollOnChange,
+}: Props) {
 export default function ExpensesTable({
   expenses,
   onDelete,
@@ -36,8 +42,9 @@ export default function ExpensesTable({
 
   useEffect(() => {
     if (bottomBoxRef.current && autoScrollOnChange) {
-      bottomBoxRef.current.scrollIntoView({ behavior: "smooth" });
+      bottomBoxRef.current.scrollIntoView({ behavior: 'smooth' });
     }
+  }, [expenses, autoScrollOnChange]);
   }, [expenses, autoScrollOnChange]);
 
   return (
@@ -48,7 +55,7 @@ export default function ExpensesTable({
             <TableCell
               sx={{
                 minWidth: { xs: 140, md: 162 },
-                width: { xs: "30%", md: "25%" },
+                width: { xs: '30%', md: '25%' },
               }}
             >
               <Typography component="span" variant="subtitle2">
@@ -56,7 +63,7 @@ export default function ExpensesTable({
               </Typography>
             </TableCell>
             {md && (
-              <TableCell>
+              <TableCell sx={{ width: '100%' }}>
                 <Typography component="span" variant="subtitle2">
                   Description
                 </Typography>
@@ -81,7 +88,7 @@ export default function ExpensesTable({
             return (
               <TableRow
                 key={expense.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell>
                   <Stack
@@ -110,7 +117,7 @@ export default function ExpensesTable({
                     <Typography
                       component="span"
                       variant="subtitle1"
-                      sx={{ wordWrap: "break-word" }}
+                      sx={{ wordWrap: 'break-word' }}
                     >
                       {expense.description}
                     </Typography>
@@ -125,9 +132,7 @@ export default function ExpensesTable({
 
                 <TableCell>
                   <AppIconButton
-                    onClick={() => {
-                      onDelete(expense.id);
-                    }}
+                    onClick={() => onDelete(expense.id)}
                     aria-label="Remove Expense"
                   >
                     <DeleteIcon />

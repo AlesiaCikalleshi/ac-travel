@@ -1,25 +1,25 @@
-import { type SubmitHandler } from "react-hook-form";
+import { type SubmitHandler } from 'react-hook-form';
 
-import PackingListForm from "@features/trip/components/PackingListForm";
-import { Trip } from "@features/trip/types";
-import { useAppDispatch, useAppSelector } from "@store/index";
+import PackingListForm from '../../../components/PackingListsForm';
+import type { Trip } from '@features/trip/types';
+import { useAppDispatch, useAppSelector } from '@store/index';
 
 import {
   nextStep,
   selectWizardTrip,
   setPackingLists,
-} from "../../store/tripWizardSlice";
-import Pagination from "../Navigation/Pagination";
+} from '../../store/tripWizardSlice';
+import Pagination from '../Navigation/Pagination';
 
 interface FormInput {
-  packingLists: Trip["packingLists"];
+  packingLists: Trip['packingLists'];
 }
 
 export default function PackingLists() {
-  const { onSubmit, packingLists } = usePackingListForm();
+  const { onSubmit, packingLists } = usePackingLists();
 
   return (
-    <PackingListForm
+    <PackingListsForm
       defaultPackingLists={packingLists}
       onSubmit={onSubmit}
       SubmitComponent={<Pagination />}
@@ -27,11 +27,11 @@ export default function PackingLists() {
   );
 }
 
-function usePackingListForm() {
+function usePackingLists() {
   const trip = useAppSelector(selectWizardTrip);
   const dispatch = useAppDispatch();
 
-  const onSubmit: SubmitHandler<FormInput> = async (data) => {
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
     dispatch(setPackingLists(data.packingLists));
     dispatch(nextStep());
   };

@@ -1,10 +1,11 @@
-import dayjs from "dayjs";
-import { type Control, Controller } from "react-hook-form";
+import dayjs from 'dayjs';
+import { type Control, Controller, type Validate } from 'react-hook-form';
 
-import type { SxProps, Theme } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import type { SxProps, Theme } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
 
 interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   name: string;
   control: Control<any, unknown>;
   fullWidth?: boolean;
@@ -12,6 +13,8 @@ interface Props {
   requiredErrorText?: string;
   maxDate?: Date | null;
   minDate?: Date | null;
+  validate?: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Validate<any, any> | Record<string, Validate<any, any>> | undefined;
   sx?: SxProps<Theme>;
 }
 
@@ -24,23 +27,24 @@ export default function DateSelectInput({
   requiredErrorText,
   fullWidth,
   sx,
+  validate,
 }: Props) {
   return (
     <Controller
       name={name}
       control={control}
-      rules={{ required: requiredErrorText }}
+      rules={{ required: requiredErrorText, validate }}
       render={({ field: { ref, ...field }, fieldState }) => (
         <DatePicker
           label={label}
           slotProps={{
             textField: {
               inputRef: ref,
-              variant: "standard",
+              variant: 'standard',
               helperText: fieldState.error?.message,
               error: Boolean(fieldState.error),
             },
-            inputAdornment: { position: "start" },
+            inputAdornment: { position: 'start' },
           }}
           {...field}
           onChange={(newValue) => {
@@ -53,8 +57,8 @@ export default function DateSelectInput({
             field.onChange(value ?? newValue);
           }}
           sx={{
-            width: fullWidth ? "100%" : "auto",
-            "& .MuiSvgIcon-root": { ml: 0.1 },
+            width: fullWidth ? '100%' : 'auto',
+            '& .MuiSvgIcon-root': { ml: 0.1 },
             ...sx,
           }}
           value={field.value ? dayjs(field.value) : null}

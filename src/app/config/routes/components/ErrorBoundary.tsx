@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { Alert, AlertTitle, Button, Typography } from "@mui/material";
+import { Alert, AlertTitle, Button, Typography } from '@mui/material';
 
 interface Props {
   children: React.ReactNode;
@@ -29,7 +29,7 @@ class ErrorBoundary extends Component<Props, State> {
         <Alert variant="outlined" color="error" sx={{ mt: 2 }}>
           <AlertTitle>Something went wrong 🥲</AlertTitle>
           <Typography>
-            {this.state.error?.message ?? "Please try again later!"}
+            {this.state.error?.message ?? 'Please try again later!'}
           </Typography>
           <Button
             variant="contained"

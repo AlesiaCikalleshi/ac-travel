@@ -7,16 +7,16 @@ import {
   REHYDRATE,
   persistReducer,
   persistStore,
-} from "redux-persist";
-import storage from "redux-persist/lib/storage";
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import authReducer from "@features/auth/store/authSlice";
-import tripWizardReducer from "@features/trip/add-trip/store/tripWizardSlice";
-import { tripsApi } from "@features/trip/store/tripApi";
+import authReducer from '@features/auth/store/authSlice';
+import tripWizardReducer from '@features/trip/add-trip/store/tripWizardSlice';
+import { tripsApi } from '@features/trip/store/tripsApi';
 
-import { rtkQueryErrorLogger } from "./middleware/errorMiddleware";
+import { rtkQueryErrorLogger } from './middleware/errorMiddleware';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -25,9 +25,9 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   storage,
-  whitelist: ["tripWizard"],
+  whitelist: ['tripWizard'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

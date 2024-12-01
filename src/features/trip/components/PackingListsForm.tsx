@@ -1,16 +1,16 @@
-import debounce from "lodash.debounce";
-import { useCallback, useEffect, useState } from "react";
+import debounce from 'lodash.debounce';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Controller,
   type SubmitHandler,
-  UseFormWatch,
+  type UseFormWatch,
   useFieldArray,
   useForm,
-} from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
+} from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 
-import AddIcon from "@mui/icons-material/Add";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import {
   Checkbox,
   Grid,
@@ -19,24 +19,25 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
-import { Colors } from "@config/styles";
-import { Trip } from "@features/trip/types";
-import AppButton from "@features/ui/logo/AppButton";
+import { Colors } from '@config/styles';
+import AppButton from '@features/ui/AppButton';
+
+import type { Trip } from '../types';
 
 interface Props {
-  defaultPackingLists: Trip["packingLists"];
-  onChange?: (newPackingLists: Trip["packingLists"]) => void;
+  defaultPackingLists: Trip['packingLists'];
+  onChange?: (newPackingLists: Trip['packingLists']) => void;
   onSubmit?: SubmitHandler<FormInput>;
   SubmitComponent?: React.ReactNode;
 }
 
 interface FormInput {
-  packingLists: Trip["packingLists"];
+  packingLists: Trip['packingLists'];
 }
 
-export default function PackingListForm(props: Props) {
+export default function PackingListsForm(props: Props) {
   const {
     packingLists,
     handleSubmit,
@@ -53,8 +54,9 @@ export default function PackingListForm(props: Props) {
     <Stack
       component="form"
       onSubmit={props.onSubmit ? handleSubmit(props.onSubmit) : undefined}
+      onSubmit={props.onSubmit ? handleSubmit(props.onSubmit) : undefined}
       noValidate
-      sx={{ width: "100%" }}
+      sx={{ width: '100%' }}
       gap={3}
     >
       <Stack gap={1}>
@@ -74,9 +76,9 @@ export default function PackingListForm(props: Props) {
           variant="text"
           onClick={onAddPackingListClick}
           startIcon={<AddIcon />}
-          sx={{ textTransform: "uppercase" }}
+          sx={{ textTransform: 'uppercase' }}
         >
-          Add checklist
+          Add Checklist
         </AppButton>
       </Stack>
 
@@ -87,12 +89,15 @@ export default function PackingListForm(props: Props) {
             key={packingList.id}
             xs={1}
             sx={{
-              borderRight: { xs: "none", md: 1 },
-              borderBottom: { xs: 1, md: "none" },
-              borderColor: { xs: "grey.200", md: "grey.200" },
+              borderRight: { xs: 'none', md: 1 },
+              borderBottom: {
+                xs: packingListIndex === packingLists.length - 1 ? 0 : 1,
+                md: 'none',
+              },
+              borderColor: { xs: 'grey.200', md: 'grey.200' },
               pb: { xs: 2, md: 0 },
               px: { md: 2 },
-              minHeight: { xs: 194, md: "auto" },
+              minHeight: { xs: 194, md: 'auto' },
             }}
           >
             <Stack
@@ -122,7 +127,7 @@ export default function PackingListForm(props: Props) {
                         checked={field.value}
                         onChange={field.onChange}
                         inputProps={{
-                          "aria-label": "Is packing list item checked",
+                          'aria-label': 'Is packing list item checked',
                         }}
                       />
                     )}
@@ -132,18 +137,17 @@ export default function PackingListForm(props: Props) {
                     control={control}
                     render={({ field: { ref, ...field } }) => (
                       <InputBase
-                        id={`${packingList.name}.${packingListIndex}.items.${itemIndex}`}
                         inputRef={ref}
                         placeholder="Type here..."
-                        inputProps={{ "aria-label": "Packing list item name" }}
+                        inputProps={{ 'aria-label': 'Packing list item name' }}
                         onKeyDown={(event) =>
                           onInputKeyDown(event, packingListIndex, itemIndex)
                         }
                         sx={{
                           textDecoration: item.isChecked
-                            ? "line-through"
-                            : "none",
-                          width: "100%",
+                            ? 'line-through'
+                            : 'none',
+                          width: '100%',
                         }}
                         {...field}
                       />
@@ -161,16 +165,16 @@ export default function PackingListForm(props: Props) {
 }
 
 function usePackingListsForm({ defaultPackingLists, onChange }: Props) {
-  const [newListName, setNewListName] = useState("");
+  const [newListName, setNewListName] = useState('');
   const { watch, handleSubmit, control, setFocus } = useForm<FormInput>({
     defaultValues: {
       packingLists: defaultPackingLists,
     },
   });
-  const packingLists = watch("packingLists");
+  const packingLists = watch('packingLists');
   const { update, remove, append } = useFieldArray({
     control,
-    name: "packingLists",
+    name: 'packingLists',
   });
 
   const onAddPackingListClick = () => {
@@ -180,9 +184,9 @@ function usePackingListsForm({ defaultPackingLists, onChange }: Props) {
     append({
       id: uuidv4(),
       name: newListName,
-      items: [{ id: uuidv4(), text: "", isChecked: false }],
+      items: [{ id: uuidv4(), text: '', isChecked: false }],
     });
-    setNewListName("");
+    setNewListName('');
   };
 
   const onRemovePackingListClick = (packingListIndex: number) => {
@@ -192,7 +196,7 @@ function usePackingListsForm({ defaultPackingLists, onChange }: Props) {
   const onNewListInputKeyDown = (
     event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault();
       onAddPackingListClick();
     }
@@ -203,12 +207,12 @@ function usePackingListsForm({ defaultPackingLists, onChange }: Props) {
     packingListIndex: number,
     itemIndex: number,
   ) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault();
       const newItems = [...packingLists[packingListIndex].items];
       newItems.splice(itemIndex + 1, 0, {
         id: uuidv4(),
-        text: "",
+        text: '',
         isChecked: false,
       });
       update(packingListIndex, {
@@ -222,7 +226,7 @@ function usePackingListsForm({ defaultPackingLists, onChange }: Props) {
           ),
         0,
       );
-    } else if (event.key === "Backspace") {
+    } else if (event.key === 'Backspace') {
       if (
         !packingLists[packingListIndex].items[itemIndex].text &&
         packingLists[packingListIndex].items.length > 1
@@ -246,9 +250,7 @@ function usePackingListsForm({ defaultPackingLists, onChange }: Props) {
       }
     }
   };
-
   useWatchChange(watch, onChange);
-
   return {
     control,
     handleSubmit,
@@ -264,19 +266,24 @@ function usePackingListsForm({ defaultPackingLists, onChange }: Props) {
 
 function useWatchChange(
   watch: UseFormWatch<FormInput>,
-  onChange?: (newPackingLists: Trip["packingLists"]) => void,
+
+  onChange?: (newPackingLists: Trip['packingLists']) => void,
 ) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
+
   const onUpdateDebounced = useCallback(
-    debounce((data: Trip["packingLists"]) => {
+    debounce((data: Trip['packingLists']) => {
       onChange?.(data);
     }, 500),
+
     [],
   );
+
   useEffect(() => {
     const formUpdateSubscription = watch((newValues) => {
-      onUpdateDebounced(newValues.packingLists as Trip["packingLists"]);
+      onUpdateDebounced(newValues.packingLists as Trip['packingLists']);
     });
+
     return () => formUpdateSubscription.unsubscribe();
   }, [onUpdateDebounced, watch]);
 }

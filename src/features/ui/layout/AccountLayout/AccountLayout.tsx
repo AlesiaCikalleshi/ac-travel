@@ -1,57 +1,63 @@
-import { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 
-import { CSSObject } from "@emotion/react";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Drawer, IconButton, type Theme } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import { styled } from "@mui/material/styles";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import MenuIcon from '@mui/icons-material/Menu';
+import {
+  AppBar,
+  Box,
+  type CSSObject,
+  Drawer,
+  IconButton,
+  type Theme,
+  Toolbar,
+  styled,
+} from '@mui/material';
 
-import ErrorBoundary from "@config/components/ErrorBoundary";
-import { theme } from "@config/styles";
-import AppIconButton from "@features/ui/logo/AppIconButton";
-import { useBreakpoints } from "@hooks/useBreakpoints";
+import { AppRoutes } from '@config/routes';
+import ErrorBoundary from '@config/routes/components/ErrorBoundary';
+import { theme } from '@config/styles';
+import AppIconButton from '@features/ui/AppIconButton';
+import HideOnScroll from '@features/ui/HideOnScroll';
+import { useBreakpoints } from '@hooks/useBreakpoints';
 
-import AccountSideBar from "./AccountSideBar";
+import AccountSideBar from './AccountSideBar';
 
 const DESKTOP_DRAWER_WIDTH = 288;
 const DESKTOP_MINIMIZED_DRAWER_WIDTH = 94;
 const openedMixin = (theme: Theme): CSSObject => ({
   width: DESKTOP_DRAWER_WIDTH,
-  transition: theme.transitions.create("width", {
+  transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: "hidden",
+  overflowX: 'hidden',
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
-  transition: theme.transitions.create("width", {
+  transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: "hidden",
+  overflowX: 'hidden',
   width: DESKTOP_MINIMIZED_DRAWER_WIDTH,
 });
 
 const StyledDrawer = styled(Drawer, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
   width: DESKTOP_DRAWER_WIDTH,
   flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
   ...(open && {
     ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme),
   }),
   ...(!open && {
     ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme),
   }),
 }));
 
@@ -59,6 +65,7 @@ const TOOLBAR_STYLES = { mt: 2, mb: 1 };
 
 export default function AccountLayout() {
   const location = useLocation();
+  const isPrimaryNavBackgroundColor = location.pathname === AppRoutes.dashboard;
   const { md, xl } = useBreakpoints();
   const [isOpen, setOpen] = useState(xl);
 
@@ -77,9 +84,9 @@ export default function AccountLayout() {
   return (
     <Box
       sx={{
-        display: "flex",
-        bgcolor: "grey.100",
-        minHeight: "100vh",
+        display: 'flex',
+        bgcolor: 'grey.100',
+        minHeight: '100vh',
       }}
     >
       {/* Desktop Drawer */}
@@ -94,19 +101,19 @@ export default function AccountLayout() {
             onClick={handleDrawerToggle}
             sx={{
               borderRadius: 1,
-              position: "fixed",
+              position: 'fixed',
               top: 27,
               left: `calc(${
                 isOpen ? DESKTOP_DRAWER_WIDTH : DESKTOP_MINIMIZED_DRAWER_WIDTH
               }px - 17px)`,
-              background: "white",
+              background: 'white',
               zIndex: theme.zIndex.drawer + 1,
-              transition: theme.transitions.create("left", {
+              transition: theme.transitions.create('left', {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
               }),
-              ":hover": {
-                background: "white",
+              ':hover': {
+                background: 'white',
               },
             }}
           >
@@ -118,29 +125,39 @@ export default function AccountLayout() {
       {/* Mobile Drawer */}
       {!md && (
         <>
-          <AppBar
-            position="fixed"
-            sx={{
-              boxShadow: "none",
-              background: "grey.100",
-            }}
-          >
-            <Toolbar sx={TOOLBAR_STYLES}>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-              >
-                <MenuIcon
-                  sx={{
-                    color: "primary.main",
-                    fontSize: 40,
-                  }}
-                />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
+          <HideOnScroll>
+            <AppBar
+              position="fixed"
+              sx={{
+                boxShadow: 'none',
+                backgroundColor: {
+                  xs: isPrimaryNavBackgroundColor ? 'primary.main' : 'grey.100',
+                  md: 'grey.100',
+                },
+              }}
+            >
+              <Toolbar sx={TOOLBAR_STYLES}>
+                <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  edge="start"
+                  onClick={handleDrawerToggle}
+                >
+                  <MenuIcon
+                    sx={{
+                      color: {
+                        xs: isPrimaryNavBackgroundColor
+                          ? 'white'
+                          : 'primary.main',
+                        md: 'primary.main',
+                      },
+                      fontSize: 40,
+                    }}
+                  />
+                </IconButton>
+              </Toolbar>
+            </AppBar>
+          </HideOnScroll>
           <Drawer
             variant="temporary"
             open={isOpen}
@@ -149,8 +166,8 @@ export default function AccountLayout() {
               keepMounted: true, // Better open performance on mobile.
             }}
             sx={{
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
                 width: DESKTOP_DRAWER_WIDTH,
               },
             }}
@@ -163,7 +180,7 @@ export default function AccountLayout() {
       <Box
         component="main"
         sx={{
-          width: "100%",
+          width: '100%',
           px: {
             xs: 2,
             md: 7,
@@ -177,7 +194,7 @@ export default function AccountLayout() {
       >
         <Toolbar
           sx={{
-            display: { md: "none" },
+            display: { md: 'none' },
             ...TOOLBAR_STYLES,
           }}
         />

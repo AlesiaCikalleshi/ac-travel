@@ -1,26 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-import { ButtonBase, Grid } from "@mui/material";
+import { ButtonBase, Grid } from '@mui/material';
 
-import { TRIP_PREVIEW_IMAGES } from "@features/trip/data";
-import AppDialog from "@features/ui/logo/AppDialog";
-import { useBreakpoints } from "@hooks/useBreakpoints";
-import useToast from "@hooks/useToast";
-import { useStorage } from "@services/firebase";
+import AppDialog from '@features/ui/AppDialog';
+import { useBreakpoints } from '@hooks/useBreakpoints';
+import useToast from '@hooks/useToast';
+import { useStorage } from '@services/firebase';
 
-import { ACCEPTED_PHOTO_FORMATS } from "../add-trip/components/constants";
-import { PreviewImage, Trip } from "../types";
-import PhotoCard from "./Files/PhotoCard";
-import UploadFileButton from "./Files/UploadFileButton";
+import { ACCEPTED_PHOTO_FORMATS } from '../constants';
+import { TRIP_PREVIEW_IMAGES } from '../data';
+import type { PreviewImage, Trip } from '../types';
+import PhotoCard from './Files/PhotoCard';
+import UploadFileButton from './Files/UploadFileButton';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (previewImage: Trip["previewImage"]) => void;
   defaultPreviewImage: PreviewImage | null;
   defaultPreviewImageSrc?: string | null;
+  onSave: (previewImage: Trip['previewImage']) => void;
   // Will be called in case of uploaded file removal
-  onChange?: (previewImage: Trip["previewImage"]) => void;
+  onChange?: (previewImage: Trip['previewImage']) => void;
   tripId: string;
 }
 
@@ -32,9 +32,11 @@ export default function PreviewImageDialog({
   defaultPreviewImageSrc,
   onChange,
   tripId,
+  tripId,
 }: Props) {
   const { md } = useBreakpoints();
   const { showErrorMessage } = useToast();
+
   const {
     uploadFiles,
     uploadProgresses,
@@ -50,33 +52,39 @@ export default function PreviewImageDialog({
       }
     },
   });
+
   const customImageInputRef = useRef<HTMLInputElement | null>(null);
+
   const [customImageFile, setCustomImageFile] = useState<File | null>();
   const [customPreviewImageSrc, setCustomPreviewImageSrc] = useState<
     string | null | undefined
   >(defaultPreviewImageSrc);
-
   const [selectedPreviewImage, setSelectedPreviewImage] =
-    useState<Trip["previewImage"]>(defaultPreviewImage);
+    useState<Trip['previewImage']>(defaultPreviewImage);
+
   const onTemplateImageClick = (imageId: string) => {
     if (!isLoading && !removingFilePath) {
       setSelectedPreviewImage({ templateImageId: imageId });
     }
   };
+
   const onCancel = () => {
     setSelectedPreviewImage(defaultPreviewImage);
     onClose();
   };
+
   const onSaveClick = async () => {
     if (!selectedPreviewImage) {
-      showErrorMessage("Please select a preview image!");
+      showErrorMessage('Please select a preview image!');
       return;
     }
+
     if (
       selectedPreviewImage.url &&
       !selectedPreviewImage.storagePath &&
       customImageFile
     ) {
+      uploadFiles(`preview-images/${tripId}`, [
       uploadFiles(`preview-images/${tripId}`, [
         { fileName: customImageFile.name, file: customImageFile },
       ]);
@@ -90,10 +98,12 @@ export default function PreviewImageDialog({
       onSave(selectedPreviewImage);
     }
   };
+
   // Custom Image Modifications
   const onCustomImageUploadClick = () => {
     customImageInputRef.current?.click();
   };
+
   const onCustomImageRemove = async () => {
     const newSelectedPreviewImage = {
       templateImageId: TRIP_PREVIEW_IMAGES[TRIP_PREVIEW_IMAGES.length - 1].id,
@@ -108,6 +118,7 @@ export default function PreviewImageDialog({
       setCustomImageFile(null);
     }
   };
+
   const onCustomImageFileInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -119,6 +130,7 @@ export default function PreviewImageDialog({
       });
     }
   };
+
   const selectCustomPreviewImage = () => {
     if (customImageFile) {
       setSelectedPreviewImage({
@@ -128,6 +140,7 @@ export default function PreviewImageDialog({
       setSelectedPreviewImage(defaultPreviewImage);
     }
   };
+
   // File upload errors displaying
   useEffect(() => {
     if (uploadErrors[0]) {
@@ -144,6 +157,7 @@ export default function PreviewImageDialog({
       onClose={onCancel}
       onPrimaryButtonClick={onSaveClick}
       isLoading={isLoading}
+      maxWidth={720}
     >
       <Grid container spacing={{ xs: 0.5, md: 1.5 }} columns={{ xs: 2, md: 3 }}>
         {TRIP_PREVIEW_IMAGES.map((image) => (
@@ -154,9 +168,9 @@ export default function PreviewImageDialog({
                 border: 4,
                 borderColor:
                   selectedPreviewImage?.templateImageId === image.id
-                    ? "primary.main"
-                    : "white",
-                overflow: "hidden",
+                    ? 'primary.main'
+                    : 'white',
+                overflow: 'hidden',
               }}
               onClick={() => onTemplateImageClick(image.id)}
             >
@@ -164,7 +178,7 @@ export default function PreviewImageDialog({
                 src={image.src}
                 alt={image.alt}
                 loading="lazy"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               />
             </ButtonBase>
           </Grid>
@@ -185,8 +199,8 @@ export default function PreviewImageDialog({
               enableBorders
               borderColor={
                 selectedPreviewImage?.url || selectedPreviewImage?.storagePath
-                  ? "primary.main"
-                  : "white"
+                  ? 'primary.main'
+                  : 'white'
               }
             />
           ) : (
@@ -194,7 +208,7 @@ export default function PreviewImageDialog({
               <UploadFileButton
                 mainText="Upload preview photo"
                 subText="PNG or PDF (max. 3MB)"
-                sx={{ border: 4, borderColor: "white" }}
+                sx={{ border: 4, borderColor: 'white' }}
                 showSubText={md}
                 onClick={onCustomImageUploadClick}
               />

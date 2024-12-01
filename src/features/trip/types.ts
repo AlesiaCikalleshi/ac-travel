@@ -1,10 +1,10 @@
 export type ExpenseCategory =
-  | "Tickets"
-  | "Food"
-  | "Fun"
-  | "Hotel"
-  | "Shopping"
-  | "Other";
+  | 'Tickets'
+  | 'Food'
+  | 'Fun'
+  | 'Hotel'
+  | 'Shopping'
+  | 'Other';
 
 export interface Expense {
   id: string;

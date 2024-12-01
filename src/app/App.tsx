@@ -1,18 +1,17 @@
-import { SnackbarProvider } from "notistack";
-import { BrowserRouter } from "react-router-dom";
-import { PersistGate } from "redux-persist/integration/react";
+import { SnackbarProvider } from 'notistack';
+import { BrowserRouter } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-import ErrorBoundary from "@config/components/ErrorBoundary";
-import { AppRouter } from "@config/routes";
-import { theme } from "@config/styles";
-import Loader from "@features/ui/logo/Loader";
-import { useAuthStateSubscription } from "@services/firebase";
-
-import { persistor } from "./store";
+import { AppRouter } from '@config/routes';
+import ErrorBoundary from '@config/routes/components/ErrorBoundary';
+import { theme } from '@config/styles';
+import Loader from '@features/ui/Loader';
+import { useAuthStateSubscription } from '@services/firebase';
+import { persistor } from '@store/index';
 
 export default function App() {
   useAuthStateSubscription();

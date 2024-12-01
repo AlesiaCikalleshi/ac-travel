@@ -1,24 +1,30 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
-import AddIcon from "@mui/icons-material/Add";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { Avatar, ButtonBase, List, Stack, Typography } from "@mui/material";
-import Box from "@mui/material/Box";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
+import AddIcon from '@mui/icons-material/Add';
+import LogoutIcon from '@mui/icons-material/Logout';
+import {
+  Avatar,
+  Box,
+  ButtonBase,
+  Link,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  Stack,
+  Typography,
+} from '@mui/material';
 
-import { AppRoutes } from "@config/routes";
-import { Colors } from "@config/styles";
-import { theme } from "@config/styles";
-import { selectUser } from "@features/auth/store/authSlice";
-import AppButton from "@features/ui/logo/AppButton";
-import Logo from "@features/ui/logo/Logo";
-import { useBreakpoints } from "@hooks/useBreakpoints";
-import { logout } from "@services/api";
-import { useAppSelector } from "@store/index";
+import { AppRoutes } from '@config/routes';
+import { Colors, theme } from '@config/styles';
+import { selectUser } from '@features/auth/store/authSlice';
+import AppButton from '@features/ui/AppButton';
+import Logo from '@features/ui/logo/Logo';
+import { useBreakpoints } from '@hooks/useBreakpoints';
+import { logout } from '@services/api';
+import { persistor, useAppSelector } from '@store/index';
 
-import { ACCOUNT_LINKS } from "./data";
+import { ACCOUNT_LINKS } from './data';
 
 interface Props {
   onClose: () => void;
@@ -28,7 +34,7 @@ interface Props {
 export default function AccountSideBar({ isMinimized, onClose }: Props) {
   const { md } = useBreakpoints();
   const user = useAppSelector(selectUser);
-  const userInitial = user?.displayName?.[0];
+  const userInitial = user?.displayName?.split(' ')[0][0];
 
   const onLinkClick = () => {
     if (!md) {
@@ -36,12 +42,14 @@ export default function AccountSideBar({ isMinimized, onClose }: Props) {
     }
   };
 
-  const onLogout = () => {
-    logout();
+  const onLogout = async () => {
+    await logout();
+    persistor.purge();
+    window.location.reload();
   };
 
   return (
-    <Stack justifyContent="space-between" sx={{ py: 3, px: 2, height: "100%" }}>
+    <Stack justifyContent="space-between" sx={{ py: 3, px: 2, height: '100%' }}>
       <Box>
         <Box mb={6}>
           <Logo isMinimized={isMinimized} />
@@ -52,7 +60,7 @@ export default function AccountSideBar({ isMinimized, onClose }: Props) {
           alignItems="center"
           mb={4}
           gap={3}
-          justifyContent={isMinimized ? "center" : "flex-start"}
+          justifyContent={isMinimized ? 'center' : 'flex-start'}
         >
           <Avatar sx={{ width: 48, height: 48, background: Colors.disabled }}>
             {userInitial}
@@ -65,9 +73,9 @@ export default function AccountSideBar({ isMinimized, onClose }: Props) {
               <NavLink
                 to={path}
                 style={{
-                  width: "100%",
+                  width: '100%',
 
-                  textDecoration: "none",
+                  textDecoration: 'none',
                 }}
                 onClick={onLinkClick}
               >
@@ -76,19 +84,19 @@ export default function AccountSideBar({ isMinimized, onClose }: Props) {
                     sx={{
                       background: isActive
                         ? Colors.secondaryGreen
-                        : "transparent",
+                        : 'transparent',
                       borderRadius: 2,
                       color: isActive
                         ? theme.palette.primary.main
                         : theme.palette.text.primary,
                       mb: 1,
                       px: isMinimized ? 1 : 2,
-                      justifyContent: isMinimized ? "center" : "flex-start",
+                      justifyContent: isMinimized ? 'center' : 'flex-start',
                     }}
                   >
                     <ListItemIcon
                       sx={{
-                        minWidth: isMinimized ? "inherit" : 56,
+                        minWidth: isMinimized ? 'inherit' : 56,
                         color: isActive
                           ? theme.palette.primary.main
                           : theme.palette.text.secondary,
@@ -97,7 +105,7 @@ export default function AccountSideBar({ isMinimized, onClose }: Props) {
                       <Icon fontSize="large" />
                     </ListItemIcon>
                     {!isMinimized && (
-                      <Typography variant={isActive ? "body2" : "body1"}>
+                      <Typography variant={isActive ? 'body2' : 'body1'}>
                         {text}
                       </Typography>
                     )}
@@ -122,15 +130,15 @@ export default function AccountSideBar({ isMinimized, onClose }: Props) {
             justifyContent="center"
             direction="row"
           >
-            {isMinimized ? "" : "Go Travel"} <AddIcon />
+            {isMinimized ? '' : 'Go Travel'} <AddIcon />
           </Stack>
         </AppButton>
       </Box>
       <ButtonBase
         onClick={onLogout}
-        sx={{ height: 51, py: 1, px: 2, width: "fit-content", borderRadius: 2 }}
+        sx={{ height: 51, py: 1, px: 2, width: 'fit-content', borderRadius: 2 }}
       >
-        <LogoutIcon sx={{ color: "text.secondary", mr: isMinimized ? 0 : 4 }} />
+        <LogoutIcon sx={{ color: 'text.secondary', mr: isMinimized ? 0 : 4 }} />
         {!isMinimized && (
           <Typography component="span" variant="body1">
             Logout

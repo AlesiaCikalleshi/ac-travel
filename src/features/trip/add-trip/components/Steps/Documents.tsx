@@ -1,26 +1,25 @@
-import { useAppDispatch, useAppSelector } from "@store/index";
+import { useAppDispatch, useAppSelector } from '@store/index';
 
-import FilesForm from "../../../components/Files/FilesForm";
-import type { TripFile } from "../../../types";
+import FilesForm from '../../../components/Files/FilesForm';
+import type { TripFile } from '../../../types';
 import {
   nextStep,
   selectWizardTrip,
   setDocuments,
-} from "../../store/tripWizardSlice";
-import Pagination from "../Navigation/Pagination";
+} from '../../store/tripWizardSlice';
+import Pagination from '../Navigation/Pagination';
 
 export default function Documents() {
-  const { documents, onSubmit, onFileStorageRemoval, tripId } =
-    useDocumentsForm();
+  const { documents, onSubmit, onFileStorageRemoval } = useDocumentsForm();
 
   return (
     <FilesForm
+      tripId={tripId}
       defaultFiles={documents}
       onSubmit={onSubmit}
       SubmitComponent={<Pagination />}
       onChange={onFileStorageRemoval}
       type="document"
-      tripId={tripId}
     />
   );
 }
@@ -34,7 +33,7 @@ function useDocumentsForm() {
     dispatch(nextStep());
   };
 
-  const onFileStorageRemoval  = (data: TripFile[]) => {
+  const onFileStorageRemoval = (data: TripFile[]) => {
     dispatch(setDocuments(data));
   };
 

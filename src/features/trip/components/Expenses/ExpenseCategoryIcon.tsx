@@ -1,6 +1,6 @@
-import { Box, ButtonBase } from "@mui/material";
+import { Box, ButtonBase } from '@mui/material';
 
-import { ExpenseCategory } from "@features/trip/types";
+import { ExpenseCategory } from '@features/trip/types';
 
 interface Props {
   category: ExpenseCategory;
@@ -27,9 +27,9 @@ export default function ExpenseCategoryIcon({
       component={onClick ? ButtonBase : Box}
       onClick={onClick}
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         width: isSmall ? 40 : 75,
         height: isSmall ? 40 : 75,
         color,

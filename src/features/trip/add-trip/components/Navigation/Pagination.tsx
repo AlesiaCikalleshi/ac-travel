@@ -1,13 +1,13 @@
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import MobileStepper from "@mui/material/MobileStepper";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { MobileStepper } from '@mui/material';
 
-import AppButton from "@features/ui/logo/AppButton";
-import { useBreakpoints } from "@hooks/useBreakpoints";
-import { useAppDispatch, useAppSelector } from "@store/index";
+import AppButton from '@features/ui/AppButton';
+import { useBreakpoints } from '@hooks/useBreakpoints';
+import { useAppDispatch, useAppSelector } from '@store/index';
 
-import { WIZARD_STEPS } from "../../data";
-import { previousStep, selectCurrentStep } from "../../store/tripWizardSlice";
+import { WIZARD_STEPS } from '../../data';
+import { previousStep, selectCurrentStep } from '../../store/tripWizardSlice';
 
 interface Props {
   isLoading?: boolean;
@@ -16,22 +16,21 @@ interface Props {
 export default function Pagination({ isLoading }: Props) {
   const dispatch = useAppDispatch();
   const { md, lg } = useBreakpoints();
-  const maxSteps = WIZARD_STEPS.length;
   const currentStep = useAppSelector(selectCurrentStep);
 
   const onBackButtonClick = () => dispatch(previousStep());
 
   return (
     <MobileStepper
-      variant={lg ? "dots" : "text"}
-      steps={maxSteps}
+      variant={lg ? 'dots' : 'text'}
+      steps={WIZARD_STEPS.length}
       position="static"
       activeStep={currentStep}
       nextButton={
         <AppButton
           fullWidth={!md}
           type="submit"
-          endIcon={<KeyboardArrowRight />}
+          endIcon={<ArrowForwardIcon />}
           loading={isLoading}
         >
           Next
@@ -42,25 +41,25 @@ export default function Pagination({ isLoading }: Props) {
           onClick={onBackButtonClick}
           fullWidth={!md}
           variant="outlined"
-          startIcon={<KeyboardArrowLeft />}
+          startIcon={<ArrowBackIcon />}
           sx={{
-            visibility: currentStep === 0 ? "hidden" : "visible",
+            visibility: currentStep === 0 ? 'hidden' : 'visible',
           }}
         >
           Back
         </AppButton>
       }
       sx={{
-        ".MuiMobileStepper-dots": {
-          visibility: "hidden",
+        '.MuiMobileStepper-dots': {
+          visibility: 'hidden',
         },
-        display: "flex",
+        display: 'flex',
         gap: 2,
-        whiteSpace: "nowrap",
-        position: "absolute",
+        whiteSpace: 'nowrap',
+        position: 'absolute',
         bottom: 0,
         left: 0,
-        width: "100%",
+        width: '100%',
         borderRadius: 4,
         p: { xs: 2, md: 3 },
       }}

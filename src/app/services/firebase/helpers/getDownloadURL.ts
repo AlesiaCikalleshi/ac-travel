@@ -1,9 +1,9 @@
 import {
   getDownloadURL as firebaseGetDownloadURL,
   ref,
-} from "firebase/storage";
+} from 'firebase/storage';
 
-import { storage } from "../firebase";
+import { storage } from '../firebase';
 
 export async function getDownloadURL(storagePath?: string | null) {
   if (!storagePath) {

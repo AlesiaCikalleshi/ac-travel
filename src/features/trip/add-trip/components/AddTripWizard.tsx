@@ -1,10 +1,10 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography } from '@mui/material';
 
-import { useAppSelector } from "@store/index";
+import { useAppSelector } from '@store/index';
 
-import { WIZARD_STEPS } from "../data";
-import { selectCurrentStep } from "../store/tripWizardSlice";
-import DesktopStepper from "./Navigation/DesktopStepper";
+import { WIZARD_STEPS } from '../data';
+import { selectCurrentStep } from '../store/tripWizardSlice';
+import DesktopStepper from './Navigation/DesktopStepper';
 
 export default function AddTripWizard() {
   const currentStep = useAppSelector(selectCurrentStep);
@@ -13,16 +13,16 @@ export default function AddTripWizard() {
 
   return (
     <Box>
-      <DesktopStepper currentStep={currentStep} steps={WIZARD_STEPS} />
+      <DesktopStepper steps={WIZARD_STEPS} currentStep={currentStep} />
       <Box
         sx={{
-          bgcolor: "white",
+          bgcolor: 'white',
           p: { xs: 2, md: 3 },
-          pb: { xs: 10, md: 3 },
+          pb: { xs: 10, md: 13 },
           borderRadius: 4,
           maxWidth: 926,
-          mx: "auto",
-          position: "relative",
+          mx: 'auto',
+          position: 'relative',
         }}
       >
         <Typography color="text.secondary" sx={{ mb: 1 }}>
@@ -34,15 +34,15 @@ export default function AddTripWizard() {
         <Typography
           variant="subtitle1"
           color="text.secondary"
-          sx={{ display: { xs: "none", md: "block" }, mb: 3, maxWidth: "72%" }}
+          sx={{ display: { xs: 'none', md: 'block' }, mb: 3, maxWidth: '72%' }}
         >
           {stepData.description}
         </Typography>
         <Box
           sx={{
-            maxHeight: { xs: "56vh", md: "40vh" },
-            minHeight: { xs: "56vh", md: "auto" },
-            overflowY: "scroll",
+            minHeight: { xs: '56vh', md: 'auto' },
+            maxHeight: { xs: '56vh', md: '40vh' },
+            overflowY: 'scroll',
           }}
         >
           <StepComponent />

@@ -1,17 +1,18 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
 
-import AddIcon from "@mui/icons-material/Add";
-import { Card, Stack, Typography } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import { Card, Stack, Typography } from '@mui/material';
 
-import ExpensesTable from "@features/trip/components/Expenses/ExpensesTable";
-import AppButton from "@features/ui/logo/AppButton";
-import useDialog from "@hooks/useDialog";
+import ExpensesTable from '@features/trip/components/Expenses/ExpensesTable';
+import AppButton from '@features/ui/AppButton';
+import { useBreakpoints } from '@hooks/useBreakpoints';
+import useDialog from '@hooks/useDialog';
 
-import ExpenseCategoryIcon from "../../components/Expenses/ExpenseCategoryIcon";
-import ExpenseDialog from "../../components/Expenses/ExpenseDialog";
-import { EXPENSE_ICON_BY_CATEGORY } from "../../data";
-import type { Expense, ExpenseCategory, Trip } from "../../types";
-import ContentCard from "./ContentCard";
+import ExpenseCategoryIcon from '../../../components/Expenses/ExpenseCategoryIcon';
+import ExpenseDialog from '../../../components/Expenses/ExpenseDialog';
+import { EXPENSE_ICON_BY_CATEGORY } from '../../../data';
+import type { Expense, ExpenseCategory, Trip } from '../../../types';
+import ContentCard from './ContentCard';
 
 type ExpenseGroup = {
   [category in ExpenseCategory]: number;
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export default function Expenses({ trip, onUpdate }: Props) {
+  const { md } = useBreakpoints();
   const { open, close, isOpen } = useDialog();
   const groupedExpenses = useMemo(
     () => getGroupedExpenses(trip.expenses),
@@ -45,7 +47,7 @@ export default function Expenses({ trip, onUpdate }: Props) {
 
   return (
     <Stack gap={{ xs: 1, md: 2 }}>
-      <Stack direction="row" gap={2} sx={{ overflowX: "scroll" }} pb={1}>
+      <Stack direction="row" gap={2} sx={{ overflowX: 'scroll' }} pb={1}>
         {Object.entries(groupedExpenses).map(([category, amount]) => {
           const castedCategory = category as ExpenseCategory;
           const iconInfo = EXPENSE_ICON_BY_CATEGORY[castedCategory];
@@ -55,8 +57,8 @@ export default function Expenses({ trip, onUpdate }: Props) {
               key={category}
               variant="outlined"
               sx={{
-                display: "flex",
-                flexDirection: "column",
+                display: 'flex',
+                flexDirection: 'column',
                 gap: 3,
                 py: { xs: 2, md: 4 },
                 px: { xs: 2, md: 3 },
@@ -85,7 +87,12 @@ export default function Expenses({ trip, onUpdate }: Props) {
       <ContentCard
         title="Expenses"
         titleElement={
-          <AppButton variant="outlined" onClick={open} endIcon={<AddIcon />}>
+          <AppButton
+            variant="outlined"
+            onClick={open}
+            endIcon={<AddIcon />}
+            fullWidth={!md}
+          >
             Add Expense
           </AppButton>
         }

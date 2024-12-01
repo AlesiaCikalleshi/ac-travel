@@ -1,7 +1,6 @@
-import { Trip } from "@features/trip/types";
-
-import ContentCard from "./ContentCard";
-import PackingListForm from "@features/trip/components/PackingListForm";
+import PackingListsForm from '../../../components/PackingListsForm';
+import type { Trip } from '../../../types';
+import ContentCard from './ContentCard';
 
 interface Props {
   trip: Trip;
@@ -12,10 +11,10 @@ export default function PackingLists({ trip, onUpdate }: Props) {
   const onChange = (packingLists: Trip['packingLists']) => {
     onUpdate({ packingLists });
   };
-  
+
   return (
-    <ContentCard title="Packing List">
-      <PackingListForm
+    <ContentCard title="Packing list">
+      <PackingListsForm
         defaultPackingLists={trip.packingLists}
         onChange={onChange}
       />

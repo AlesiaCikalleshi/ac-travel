@@ -1,21 +1,21 @@
-import { useCallback, useEffect } from "react";
-import { Controller, UseFormWatch, useForm } from "react-hook-form";
+import { useCallback, useEffect } from 'react';
+import { Controller, UseFormWatch, useForm } from 'react-hook-form';
 
-import PaidIcon from "@mui/icons-material/Paid";
+import PaidIcon from '@mui/icons-material/Paid';
 import {
   InputLabel,
   Stack,
   TextField,
   Typography,
   debounce,
-} from "@mui/material";
+} from '@mui/material';
 
-import { Colors } from "@config/styles";
-import PlacesForm from "@features/trip/components/PlacesForm";
+import { Colors } from '@config/styles';
+import PlacesForm from '@features/trip/components/PlacesForm';
 
-import DateSelectInput from "../../add-trip/components/Steps/DateSelectInput";
-import type { Trip } from "../../types";
-import ContentCard from "./ContentCard";
+import DateSelectInput from '../../../ui/form/DateSelectInput';
+import type { Trip } from '../../types';
+import ContentCard from './ContentCard';
 
 interface Props {
   trip: Trip;
@@ -23,29 +23,29 @@ interface Props {
 }
 
 interface FormInput {
-  name: Trip["name"];
-  description: Trip["description"];
-  startDate: Trip["startDate"];
-  endDate: Trip["endDate"];
+  name: Trip['name'];
+  description: Trip['description'];
+  startDate: Trip['startDate'];
+  endDate: Trip['endDate'];
 }
 
 export default function TripInfoAndPlaces(props: Props) {
   const totalBudget = 360;
   const { control, formValues } = useTravelInfoForm(props);
 
-  const onPlacesUpdate = (newPlaces: Trip["places"]) =>
+  const onPlacesUpdate = (newPlaces: Trip['places']) =>
     props.onUpdate({ places: newPlaces });
 
   return (
     <Stack gap={3}>
       <ContentCard title="Trip Details">
-        <Stack component="form" noValidate sx={{ width: "100%" }} gap={3}>
-          <Stack direction={{ xs: "column", md: "row" }} gap={3}>
-            <Stack sx={{ width: "100%" }} gap={3}>
+        <Stack component="form" noValidate sx={{ width: '100%' }} gap={3}>
+          <Stack direction={{ xs: 'column', md: 'row' }} gap={3}>
+            <Stack sx={{ width: '100%' }} gap={3}>
               <Controller
                 name="name"
                 control={control}
-                rules={{ required: "Please specify trip name!" }}
+                rules={{ required: 'Please specify trip name!' }}
                 render={({ field: { ref, ...field }, fieldState }) => (
                   <TextField
                     inputRef={ref}
@@ -80,7 +80,7 @@ export default function TripInfoAndPlaces(props: Props) {
                 />
                 <Stack gap={0.5}>
                   <InputLabel
-                    sx={{ fontSize: "0.875rem", lineHeight: "1.313rem" }}
+                    sx={{ fontSize: '0.875rem', lineHeight: '1.313rem' }}
                   >
                     Budget
                   </InputLabel>
@@ -128,7 +128,7 @@ export default function TripInfoAndPlaces(props: Props) {
 
 function useTravelInfoForm({ trip, onUpdate }: Props) {
   const { control, watch } = useForm<FormInput>({
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       name: trip.name,
       description: trip.description,
