@@ -15,8 +15,8 @@ import AppButton from '@features/ui/AppButton';
 
 import { useGetTripQuery, useUpdateTripMutation } from '../store/tripsApi';
 import type { Trip } from '../types';
-import TripTabs from './Tabs/TripTabs';
 import Hero from './components/Hero/Hero';
+import TripTabs from './components/Tabs/TripTabs';
 
 export default function TripDetails() {
   const { tripId } = useParams();
@@ -60,7 +60,9 @@ export default function TripDetails() {
           </AppButton>
         </Stack>
 
-        <Hero trip={trip} />
+        <Hero trip={trip} onUpdate={function (data: Partial<Trip>): void {
+          throw new Error('Function not implemented.');
+        } } />
         <TripTabs trip={trip} onUpdate={onTripUpdate} />
       </Stack>
     );

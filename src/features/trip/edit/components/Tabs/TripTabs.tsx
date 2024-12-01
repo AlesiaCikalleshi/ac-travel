@@ -1,19 +1,20 @@
-import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-import CameraEnhanceIcon from "@mui/icons-material/CameraEnhance";
-import ChecklistIcon from "@mui/icons-material/Checklist";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import ReceiptIcon from "@mui/icons-material/Receipt";
-import { Box, Tab, Tabs } from "@mui/material";
+import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import { Box, Tab, Tabs } from '@mui/material';
 
-import type { Trip } from "../../types";
-import Documents from "./Documents";
-import Expenses from "./Expenses";
-import PackingLists from "./PackingLists";
-import Photos from "./Photos";
-import TripInfoAndPlaces from "./TripInfoAndPlaces";
+import { Trip } from '@features/trip/types';
+
+import Documents from './Documents';
+import Expenses from './Expenses';
+import PackingLists from './PackingLists';
+import Photos from './Photos';
+import TripInfoAndPlaces from './TripInfoAndPlaces';
 
 interface Props {
   trip: Trip;
@@ -35,7 +36,7 @@ function CustomTabPanel({
       hidden={value !== index}
       id={`trip-edit-tabpanel-${index}`}
       aria-labelledby={`trip-edit-tab-${index}`}
-      style={{ minHeight: "90vh" }}
+      style={{ minHeight: '90vh' }}
     >
       {children}
     </div>
@@ -46,18 +47,18 @@ export default function TripTabs({ trip, onUpdate }: Props) {
   // when you refresh the page you stay in the selected(previous) tab
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedTab, setSelectedTab] = useState(
-    Number(searchParams.get("selectedTab")) ?? 0,
+    Number(searchParams.get('selectedTab')) ?? 0,
   );
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
     const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set("selectedTab", newValue.toString());
+    newSearchParams.set('selectedTab', newValue.toString());
     setSearchParams(newSearchParams);
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: '100%' }}>
       <Tabs
         value={selectedTab}
         onChange={handleTabChange}
